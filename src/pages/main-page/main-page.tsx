@@ -1,34 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
+import s from './main-page.module.scss';
+import {
+    AndroidFilled, AppleFilled,
+    HeartFilled, CalendarTwoTone, IdcardOutlined
+} from "@ant-design/icons";
+import {Button, Layout, Space, Typography} from "antd";
 
-import reactLogo from '/react.svg';
-import viteLogo from '/vite.svg';
-import tsLogo from '/ts.svg';
-import './main-page.css';
+const {Content,} = Layout;
+
+const {Link, Paragraph, Text} = Typography;
 
 export const MainPage: React.FC = () => {
-    const [count, setCount] = useState(0);
-
     return (
-        <>
-            <div>
-                <a href='https://vitejs.dev' target='_blank'>
-                    <img src={viteLogo} className='logo' alt='Vite logo' />
-                </a>
-                <a href='https://react.dev' target='_blank'>
-                    <img src={reactLogo} className='logo react' alt='React logo' />
-                </a>
-                <a href='https://www.typescriptlang.org/' target='_blank'>
-                    <img src={tsLogo} className='logo' alt='TS logo' />
-                </a>
+        <Content className={s.main}>
+            <div className={s.content}>
+                <Paragraph className={s.description}>
+                    С CleverFit ты сможешь:
+                    <ul className={s.list}>
+                        <li className={s.item}>&mdash;&nbsp;&nbsp;планировать
+                            свои тренировки на календаре, выбирая тип
+                            и уровень нагрузки;
+                        </li>
+                        <li className={s.item}>&mdash;&nbsp;&nbsp;отслеживать
+                            свои достижения в разделе статистики,
+                            сравнивая свои результаты с нормами и рекордами;
+                        </li>
+                        <li className={s.item}>&mdash;&nbsp;&nbsp;создавать свой
+                            профиль, где ты можешь
+                            загружать свои
+                            фото, видео и отзывы о тренировках;
+                        </li>
+                        <li className={s.item}>&mdash;&nbsp;&nbsp;выполнять
+                            расписанные тренировки для разных частей
+                            тела, следуя подробным инструкциям и советам
+                            профессиональных
+                            тренеров.
+                        </li>
+                    </ul>
+                </Paragraph>
+                <Paragraph className={s.definition}>
+                    CleverFit — это не просто приложение, а твой личный помощник в мире
+                    фитнеса. Не
+                    откладывай на завтра — начни тренироваться уже сегодня!
+                </Paragraph>
+                <div className={s.tasks}>
+                    <div className={s.item}>
+                        <h2 className={s.title}>Расписать тренировки</h2>
+                        <Button className={s.button} type="link"
+                                icon={<HeartFilled/>}>Тренировки</Button>
+                    </div>
+                    <div className={s.item}>
+                        <h2 className={s.title}>Назначить календарь</h2>
+                        <Button className={s.button} type="link"
+                                icon={<CalendarTwoTone twoToneColor={'var(--color-task-button-icon)'}/>}>Календарь</Button>
+                    </div>
+                    <div className={s.item}>
+                        <h2 className={s.title}>Заполнить профиль</h2>
+                        <Button className={s.button} type="link"
+                                icon={<IdcardOutlined />}>Профиль</Button>
+                    </div>
+                </div>
             </div>
-            <h1>Vite + React + TS</h1>
-            <div className='card'>
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/pages/main-page.tsx</code> and save to test HMR
-                </p>
+            <div className={s.bottom_block}>
+                <Space wrap={true} className={s.links_wrapper}>
+                    <Link href="/" className={s.link}>
+                        Смотреть отзывы
+                    </Link>
+                </Space>
+
+                <div className={s.download_block}>
+                    <Space className={s.download_section} direction="vertical">
+                        <Link className={s.link} href="/">Скачать на телефон</Link>
+                        <Text className={s.text}>Доступно в PRO-тарифe</Text>
+                    </Space>
+                    <Space className={s.buttons} direction="horizontal">
+                        <Button type="link" href="url://" icon={<AndroidFilled/>}>
+                            Android OS
+                        </Button>
+                        <Button type="link" href="url://" icon={<AppleFilled/>}>
+                            Apple iOS
+                        </Button>
+                    </Space>
+                </div>
             </div>
-            <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-        </>
+        </Content>
     );
 };

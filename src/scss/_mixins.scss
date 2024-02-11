@@ -1,0 +1,9 @@
+@mixin Font($size: 1rem, $weight: 400, $line: 1.3, $color: var(--font-color-major)) {
+    font: {
+        family: 'Inter', sans-serif;
+        size: $size;
+        weight: $weight;
+    }
+    color: $color;
+    line-height: $line;
+}
