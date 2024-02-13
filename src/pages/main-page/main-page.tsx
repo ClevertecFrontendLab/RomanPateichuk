@@ -12,19 +12,28 @@ import {Breadcrumb, Button, Layout, Menu, MenuProps, Space, Typography} from "an
 import {
     CalendarIcon,
     CleverIcon,
-    ExitIcon, FitIcon, LogoIcon,
+    ExitIcon,
+    FitIcon,
+    LogoIcon,
     ProfileIcon,
-    SwitcherIcon
+    SwitcherDesktopIconClose,
+    SwitcherMobileIconOpen,
+    SwitcherMobileIconClose,
+    SwitcherDesktopIconOpen
 } from "@components/Icon/library.tsx";
 
-const { Header, Content, Sider } = Layout;
+const {Header, Content, Sider} = Layout;
 
-const {Link,Paragraph , Title, Text} = Typography;
+const {Link, Paragraph, Title, Text} = Typography;
 
 export const MainPage: React.FC = () => {
     const [current, setCurrent] = useState<string>('');
     const [collapsed, setCollapsed] = useState<boolean>(true);
-    const [siderBreakpointXS, setSiderBreakpointXS ] = useState<boolean>(false)
+    const [siderBreakpointXS, setSiderBreakpointXS] = useState<boolean>(false)
+
+    const Logo = () => (<div className={s.logo}>{siderBreakpointXS ? <LogoIcon/> : !collapsed ? <>
+        <CleverIcon/><FitIcon/></> : <FitIcon/>}</div> )
+
     const items: MenuProps['items'] = [
             {
                 label: 'Календарь',
@@ -59,54 +68,48 @@ export const MainPage: React.FC = () => {
         setCurrent(e.key);
     };
 
+    const SwitcherIcon = () => {
+        if (siderBreakpointXS) {
+            return !collapsed ? <SwitcherMobileIconClose/> : <SwitcherMobileIconOpen/>
+        } else {
+            return !collapsed ? <SwitcherDesktopIconClose/> : <SwitcherDesktopIconOpen/>
+        }
+    }
 
     return (
-        <Layout className={s.wrapper}>
+        <Layout style={{minHeight: '100vh'}} className={s.wrapper}>
             <Sider className={s.aside} collapsed={collapsed}
                    breakpoint="xs"
-                   width={siderBreakpointXS ? 106: 208}
+                   width={siderBreakpointXS ? 106 : 208}
                    trigger={null}
-                   collapsedWidth={siderBreakpointXS ? 0 : 80}
+                   collapsedWidth={siderBreakpointXS ? 0 : 64}
                    onBreakpoint={() => {
-                       setSiderBreakpointXS(prev=> !prev)
+                       setSiderBreakpointXS(prev => !prev)
                    }}
-                    style={{
-                height: "100vh",
-                position: "sticky",
-                top: 0,
-                left: 0,
-            }}>
-                <div className={s.logo}>
-                    {siderBreakpointXS
-                        ? <LogoIcon/>
-                        : !collapsed
-                        ? <><CleverIcon/><FitIcon/></>
-                        : <FitIcon/>
-                    }
+                   style={{
+                       height: "100vh",
+                       position: "sticky",
+                       top: 0,
+                       left: 0
+                           }}
 
-
-                </div>
+            >
+                {Logo()}
                 <Menu className={s.menu} inlineCollapsed={collapsed} onClick={onClickMenuHandler}
                       selectedKeys={[current]} mode="vertical" items={items}/>
                 <Button className={s.switcher} data-test-id="sider-switch" type="link"
                         onClick={() => setCollapsed((prev) => !prev)}>
-                    <SwitcherIcon/>
+                    {SwitcherIcon()}
                 </Button>
-
-
             </Sider>
-            <Layout style={{ minHeight: '100vh' }}>
+            <Layout>
                 <Header className={s.header}>
                     <Breadcrumb className={s.breadcrumb}>
                         <Breadcrumb.Item className={s.item}>Главная</Breadcrumb.Item>
                     </Breadcrumb>
-                    {/*<Button className={s.switcher} data-test-id="sider-switch-mobile" type="link"*/}
-                    {/*        onClick={() => setCollapsed((prev) => !prev)}>*/}
-                    {/*    SwitcherMobile*/}
-                    {/*</Button>*/}
                     <Space className={s.header_block} align="start">
                         <Title level={1} className={s.title}>
-                            Приветствуем тебя в CleverFit — приложении, которое поможет тебе
+                            Приветствуем тебя в CleverFit — приложении, <><br/></>которое поможет тебе
                             добиться
                             своей
                             мечты!
@@ -117,27 +120,28 @@ export const MainPage: React.FC = () => {
 
 
                 </Header>
-                <Content className={s.main_wrapper}  >
-                    <div className={s.main}>
-                        <div className={s.content}>
-                            <Paragraph className={s.description}>
-                                С CleverFit ты сможешь:
-                                <ul className={s.list}>
-                                    <li className={s.item}>&mdash;&nbsp;&nbsp;планировать
-                                        свои тренировки на календаре, выбирая тип
+                <Content className={s.main}>
+                    <div className={s.content}>
+                        <Paragraph className={s.description}>
+                            С CleverFit ты сможешь:
+                            <ul className={s.list}>
+                                <li className={s.item}>&mdash;&nbsp;&nbsp;планировать
+                                    свои тренировки на календаре, выбирая тип
                                     и уровень нагрузки;
                                 </li>
                                 <li className={s.item}>&mdash;&nbsp;&nbsp;отслеживать
                                     свои достижения в разделе статистики,
                                     сравнивая свои результаты с нормами и рекордами;
                                 </li>
-                                <li className={s.item}>&mdash;&nbsp;&nbsp;создавать свой профиль, где ты можешь
+                                <li className={s.item}>&mdash;&nbsp;&nbsp;создавать свой
+                                    профиль, где ты можешь
                                     загружать свои
                                     фото, видео и отзывы о тренировках;
                                 </li>
                                 <li className={s.item}>&mdash;&nbsp;&nbsp;выполнять
                                     расписанные тренировки для разных частей
-                                    тела, следуя подробным инструкциям и советам профессиональных
+                                    тела, следуя подробным инструкциям и советам
+                                    профессиональных
                                     тренеров.
                                 </li>
                             </ul>
@@ -147,50 +151,46 @@ export const MainPage: React.FC = () => {
                             фитнеса. Не
                             откладывай на завтра — начни тренироваться уже сегодня!
                         </Paragraph>
-                        <div  className={s.tasks}>
+                        <div className={s.tasks}>
                             <div className={s.item}>
                                 <h2 className={s.title}>Расписать тренировки</h2>
-                                <Button className={s.button} type="link" icon={<HeartFilled />}>Тренировки</Button>
+                                <Button className={s.button} type="link"
+                                        icon={<HeartFilled/>}>Тренировки</Button>
                             </div>
                             <div className={s.item}>
                                 <h2 className={s.title}>Назначить календарь</h2>
-                                <Button className={s.button} type="link" icon={ <CalendarIcon/>}>Календарь</Button>
+                                <Button className={s.button} type="link"
+                                        icon={<CalendarIcon/>}>Календарь</Button>
                             </div>
                             <div className={s.item}>
                                 <h2 className={s.title}>Заполнить профиль</h2>
-                                <Button className={s.button} type="link" icon={ <ProfileOutlined/>}>Профиль</Button>
+                                <Button className={s.button} type="link"
+                                        icon={<ProfileOutlined/>}>Профиль</Button>
                             </div>
                         </div>
                     </div>
-                        <div className={s.bottom_block}>
-                            <Space wrap={true} className={s.links_wrapper}>
-                                <Link href="/" className={s.link}>
-                                    Смотреть отзывы
-                                </Link>
+                    <div className={s.bottom_block}>
+                        <Space wrap={true} className={s.links_wrapper}>
+                            <Link href="/" className={s.link}>
+                                Смотреть отзывы
+                            </Link>
+                        </Space>
+
+                        <div className={s.download_block}>
+                            <Space className={s.download_section} direction="vertical">
+                                <Link className={s.link} href="/">Скачать на телефон</Link>
+                                <Text className={s.text}>Доступно в PRO-тарифe</Text>
                             </Space>
-
-                            <div className={s.download_block}>
-                                <div className={s.download_section}>
-                                    <Space direction="vertical">
-                                        <Link className={s.link} href="/">Скачать на телефон</Link>
-                                        <Text className={s.text}>Доступно в PRO-тарифe</Text>
-                                    </Space>
-                                </div>
-                                <Space className={s.buttons}>
-                                    <Button type="link" href="url://" icon={<AndroidFilled/>}>
-                                        Android OS
-                                    </Button>
-                                    <Button type="link" href="url://" icon={<AppleFilled/>}>
-                                        Apple iOS
-                                    </Button>
-                                </Space>
-
-
-                            </div>
+                            <Space className={s.buttons} direction="horizontal">
+                                <Button type="link" href="url://" icon={<AndroidFilled/>}>
+                                    Android OS
+                                </Button>
+                                <Button type="link" href="url://" icon={<AppleFilled/>}>
+                                    Apple iOS
+                                </Button>
+                            </Space>
                         </div>
-
                     </div>
-
                 </Content>
             </Layout>
         </Layout>
