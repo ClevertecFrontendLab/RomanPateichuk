@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import s from './main-page.module.scss';
 import {
     AndroidFilled, AppleFilled,
@@ -68,14 +68,6 @@ export const MainPage: React.FC = () => {
         setCurrent(e.key);
     };
 
-    const SwitcherIcon = () => {
-        if (siderBreakpointXS) {
-            return !collapsed ? <SwitcherMobileIconClose/> : <SwitcherMobileIconOpen/>
-        } else {
-            return !collapsed ? <SwitcherDesktopIconClose/> : <SwitcherDesktopIconOpen/>
-        }
-    }
-
     return (
         <Layout style={{minHeight: '100vh'}} className={s.wrapper}>
             <Sider className={s.aside} collapsed={collapsed}
@@ -83,8 +75,8 @@ export const MainPage: React.FC = () => {
                    width={siderBreakpointXS ? 106 : 208}
                    trigger={null}
                    collapsedWidth={siderBreakpointXS ? 0 : 64}
-                   onBreakpoint={() => {
-                       setSiderBreakpointXS(prev => !prev)
+                   onBreakpoint={(breakPoint) => {
+                       setSiderBreakpointXS(breakPoint)
                    }}
                    style={{
                        height: "100vh",
@@ -97,10 +89,19 @@ export const MainPage: React.FC = () => {
                 {Logo()}
                 <Menu className={s.menu} inlineCollapsed={collapsed} onClick={onClickMenuHandler}
                       selectedKeys={[current]} mode="vertical" items={items}/>
-                <Button className={s.switcher} data-test-id="sider-switch" type="link"
-                        onClick={() => setCollapsed((prev) => !prev)}>
-                    {SwitcherIcon()}
-                </Button>
+                {
+                    siderBreakpointXS ?
+                        <Button className={s.switcher} type="link" data-test-id="sider-switch-mobile"
+                                onClick={() => setCollapsed((prev) => !prev)}>
+                            {!collapsed ? <SwitcherMobileIconClose /> : <SwitcherMobileIconOpen />}
+                        </Button> :
+                        <Button className={s.switcher} type="link" data-test-id="sider-switch"
+                                onClick={() => setCollapsed((prev) => !prev)}>
+                            {!collapsed ? <SwitcherDesktopIconClose /> : <SwitcherDesktopIconOpen />}
+                        </Button>
+                }
+
+
             </Sider>
             <Layout>
                 <Header className={s.header}>
