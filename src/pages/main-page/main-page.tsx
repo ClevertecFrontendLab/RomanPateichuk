@@ -80,7 +80,7 @@ export const MainPage: React.FC = () => {
                    }}
                    style={{
                        height: "100vh",
-                       position: "sticky",
+                       position: siderBreakpointXS ? "absolute" : "sticky",
                        top: 0,
                        left: 0
                            }}
@@ -116,7 +116,7 @@ export const MainPage: React.FC = () => {
                             мечты!
                         </Title>
                         <Button className={s.settings} type="link"
-                                icon={<SettingOutlined/>}>Настройки</Button>
+                                icon={<SettingOutlined />}>Настройки</Button>
                     </Space>
 
 
