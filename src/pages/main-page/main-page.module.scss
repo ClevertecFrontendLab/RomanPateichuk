@@ -116,6 +116,7 @@
 
             .description {
                 @include Font($color: #061178);
+                box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.04);
                 background: rgb(255, 255, 255);
                 padding: 1.5rem 1.5rem .625rem;
                 margin: 0 0 1.5rem;
@@ -136,6 +137,7 @@
 
             .definition {
                 @include Font($size: 1.25rem, $weight: 500);
+                box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.04);
                 background: rgb(255, 255, 255);
                 text-align: left;
                 padding: 1.5rem;
@@ -221,6 +223,7 @@
 
             .download_block {
                 padding: .75rem 0 0;
+                box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.02);
                 background: #fff;
                 border-radius: 0.12rem;
                 width: 15rem;
@@ -290,6 +293,7 @@
             border: none;
             min-height:  calc(100vh - 8.75rem);
             li {
+                color: #061178;
                 margin-bottom: .875rem;
                 @media(max-width: 479px) {
                     margin-bottom: 5px;
