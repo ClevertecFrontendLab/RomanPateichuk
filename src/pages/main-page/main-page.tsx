@@ -3,7 +3,6 @@ import s from './main-page.module.scss';
 import {
     AndroidFilled, AppleFilled,
     HeartFilled,
-    ProfileOutlined,
     SettingOutlined,
     TrophyOutlined
 } from "@ant-design/icons";
@@ -166,7 +165,7 @@ export const MainPage: React.FC = () => {
                             <div className={s.item}>
                                 <h2 className={s.title}>Заполнить профиль</h2>
                                 <Button className={s.button} type="link"
-                                        icon={<ProfileOutlined/>}>Профиль</Button>
+                                        icon={<ProfileIcon/>}>Профиль</Button>
                             </div>
                         </div>
                     </div>
