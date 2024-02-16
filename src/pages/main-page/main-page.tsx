@@ -2,14 +2,9 @@ import React from 'react';
 import s from './main-page.module.scss';
 import {
     AndroidFilled, AppleFilled,
-    HeartFilled,
+    HeartFilled, CalendarTwoTone, IdcardOutlined
 } from "@ant-design/icons";
 import {Button, Layout, Space, Typography} from "antd";
-
-import {
-    CalendarIcon,
-    ProfileIcon,
-} from "@components/Icon/library.tsx";
 
 const {Content,} = Layout;
 
@@ -57,12 +52,12 @@ export const MainPage: React.FC = () => {
                     <div className={s.item}>
                         <h2 className={s.title}>Назначить календарь</h2>
                         <Button className={s.button} type="link"
-                                icon={<CalendarIcon/>}>Календарь</Button>
+                                icon={<CalendarTwoTone twoToneColor={'var(--color-task-button-icon)'}/>}>Календарь</Button>
                     </div>
                     <div className={s.item}>
                         <h2 className={s.title}>Заполнить профиль</h2>
                         <Button className={s.button} type="link"
-                                icon={<ProfileIcon/>}>Профиль</Button>
+                                icon={<IdcardOutlined />}>Профиль</Button>
                     </div>
                 </div>
             </div>

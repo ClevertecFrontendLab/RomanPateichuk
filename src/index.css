@@ -4,6 +4,23 @@ body{
     box-sizing: border-box;
 }
 
+:root{
+    --color-menu-button-icon:  #061178;
+    --color-task-button-icon:  #2f54eb;
+    --color-aside-boxshadow: rgba(0, 0, 0, 0.15);
+    --font-color-major: #262626;
+    --color-header-bg: #f0f5ff;
+    --color-bg-major: #fff;
+    --color-bg-setting-btn: #d9d9d9;
+    --color-bxs-major: rgba(0, 0, 0, 0.04);
+    --color-bxs-download-block: rgba(0, 0, 0, 0.02);
+    --color-description-main: #061178;
+    --color-text-minor: #8c8c8c;
+    --color-bxs-btn-inset: #f0f0f0;
+
+}
+
+
 
 
 
