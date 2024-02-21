@@ -1,15 +1,7 @@
-@mixin Font($size: 1rem, $weight: 400, $line: 1.3, $color: var(--font-color-major)) {
-    font: {
-        family: 'Inter', sans-serif;
-        size: $size;
-        weight: $weight;
-    }
-    color: $color;
-    line-height: $line;
-}
+@import '../../styles/mixins';
 
     .main {
-        background-image: url("assets/bg.jpg");
+        background-image: var(--main-page-light-bg);
         background-size: cover;
         background-position: right;
         padding: 1.5rem 1.5rem 2.625rem;

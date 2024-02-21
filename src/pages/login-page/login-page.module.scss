@@ -1,0 +1,209 @@
+@import '../../styles/mixins';
+
+:global {
+    .ant-modal-body {
+        padding: 4rem 5.35rem 10.87rem 5.35rem;
+        @media(max-width: 575px) {
+            padding: 32px 1rem 124px 1rem;
+        }
+    }
+
+
+    .ant-modal-mask {
+        background: rgba(121, 156, 212, 0.5);
+        //backdrop-filter: blur(0.3rem);
+    }
+}
+
+.wrapper {
+    min-height: 100vh;
+    background-image: var(--enter-page-light-bg);
+    background-size: cover;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    height: 100%;
+    @media(max-width: 575px){
+        gap: 2rem;
+    }
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @media(max-width: 575px){
+            svg {
+                width: 203px;
+                height: 50px;
+            }
+        }
+
+    }
+
+    .login {
+        :global {
+            .ant-space {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .ant-btn-link {
+                @include Font($color: var(--link-color));
+                padding: 0;
+                @media(max-width: 575px){
+                    @include Font($size: .875rem, $color: var(--link-color) );
+                    padding: 0 .45rem;
+                }
+            }
+
+            .ant-checkbox-wrapper {
+                .ant-checkbox {
+                    &-checked {
+                        .ant-checkbox-inner {
+                            background-color: var(--link-color);
+                        }
+                    }
+                }
+
+                span {
+                    @include Font($size: .875rem)
+                }
+
+            }
+
+            .ant-input-affix-wrapper {
+                margin-bottom: 3.125rem;
+                @media(max-width: 575px){
+                    margin-bottom: 3rem;
+                }
+            }
+        }
+    }
+
+    .signup {
+        :global {
+            .ant-input-affix-wrapper {
+                &:nth-child(2) {
+                    margin-bottom: 2.875rem;
+                }
+
+                &:nth-child(3) {
+                    margin-bottom: 3.875rem;
+                    @media(max-width: 575px){
+                        margin-bottom: 3.375rem;
+                    }
+                }
+
+            }
+        }
+    }
+
+    .email {
+        @include Font($size: .875rem);
+
+        :global {
+            .ant-input {
+                height: 2.5rem;
+            }
+
+            .ant-input-group-addon {
+                padding: 0 12.5px;
+            }
+        }
+
+    }
+
+
+    :global {
+        .ant-btn-primary {
+            background-color: var(--link-color);
+            display: block;
+            width: 100%;
+            margin-bottom: 1rem;
+
+            span {
+                @include Font($color: var(--gray-1));
+                @media(max-width: 575px){
+                    @include Font($color: var(--gray-1), $size: .875rem);
+                }
+            }
+        }
+
+        .ant-btn-default {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            span {
+                @include Font();
+                @media(max-width: 575px){
+                    :nth-child(1){
+                        display: none;
+                    }
+                    @include Font($size: .875rem);
+                }
+            }
+
+        }
+
+        .ant-tabs {
+            &-content-holder {
+                .ant-input-group-wrapper {
+                    margin-bottom: 2rem;
+                }
+
+                .ant-space {
+                    margin-bottom: 1.125rem;
+                    @media (max-width: 575px){
+                        margin-bottom: 1rem;
+                    }
+                }
+
+            }
+
+            .ant-tabs-nav-list {
+                width: 100%;
+
+                .ant-tabs-tab {
+                    & + .ant-tabs-tab {
+                        margin: 0
+                    }
+
+                    justify-content: center;
+                    width: 50%;
+                    @include Font();
+                    @media(max-width: 575px){
+                        @include Font($size: .875rem);
+                    }
+                    &-active {
+                        .ant-tabs-tab-btn {
+                            color: var(--link-color);
+                        }
+
+                    }
+                }
+
+                .ant-tabs-ink-bar {
+                    width: 100%;
+                    background-color: var(--link-color);
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

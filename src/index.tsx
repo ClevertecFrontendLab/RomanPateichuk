@@ -1,10 +1,11 @@
 import React from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
-import { store } from '@redux/configure-store';
+import { store, history } from '@redux/configure-store';
+import { HistoryRouter } from "redux-first-history/rr6";
 
-import './index.css';
+import './index.scss';
 import 'antd/dist/antd.css'
 import 'normalize.css';
 
@@ -14,24 +15,27 @@ import {MainPage} from "@pages/main-page";
 import {ProfilePage} from "@pages/profile-page";
 import {ProgressPage} from "@pages/progress-page";
 import {TrainingPage} from "@pages/training-page";
-
+import {LoginPage} from "@pages/login-page";
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <HashRouter>
+            <HistoryRouter history={history}>
+
                 <Routes>
+                    <Route path='login' element={<LoginPage/>}></Route>
                     <Route path='/' element={<Layout />}>
                         <Route index element={<MainPage />}></Route>
                         <Route path='calendar' element={<CalendarPage/>}></Route>
                         <Route path='training' element={<TrainingPage/>}></Route>
                         <Route path='progress' element={<ProgressPage/>}></Route>
                         <Route path='profile' element={<ProfilePage/>}></Route>
+
                     </Route>
                 </Routes>
-            </HashRouter>
+            </HistoryRouter>
         </Provider>
     </React.StrictMode>,
 );
