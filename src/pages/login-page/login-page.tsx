@@ -122,25 +122,28 @@ export const LoginPage: React.FC = () => {
                 </div>
             </Modal>
             <Message
-                open={false}
+                isOpen={false}
                 icon={<ErrorIcon/>}
                 message={'Такой e-mail уже записан в системе. Попробуйте зарегистрироваться по другому e-mail.'}
                 title={'Данные не сохранились'}
-                action={'Назад к регистрации'}
+                actionText={'Назад к регистрации'}
+                action={()=>{alert('Назад к регистрации')}}
             />
             <Message
-                open={false}
+                isOpen={false}
                 icon={<WarningIcon/>}
                 message={'Что-то пошло не так. Попробуйте еще раз'}
                 title={'Вход не выполнен'}
-                action={'Повторить'}
+                actionText={'Повторить'}
+                action={()=>{alert('Повторить')}}
             />
             <Message
-                open={false}
+                isOpen={false}
                 icon={<SuccessIcon/>}
                 message={'Регистрация прошла успешно. Зайдите в приложение, используя свои e-mail и пароль.'}
                 title={'Регистрация успешна'}
-                action={'Войти'}
+                actionText={'Войти'}
+                action={()=>{alert('Войти')}}
             />
         </Layout>
     )

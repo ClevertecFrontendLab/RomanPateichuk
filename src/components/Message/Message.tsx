@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useState} from "react";
 import {Button, Modal, Typography} from "antd";
 
 const {Title, Text} = Typography;
@@ -6,16 +6,25 @@ import s from './Message.module.scss'
 import useMediaQuery from 'use-media-antd-query';
 
 type PropsType = {
-    open: boolean
+    isOpen: boolean
     title: string
     message: string
-    action: string
+    actionText: string
+    action: ()=>void
     icon: ReactNode
 }
 
 export const Message: React.FC<PropsType> = (props) => {
-    const {title, message, icon, action, open} = props
+    const {title, message, icon, actionText, action, isOpen} = props
     const size = useMediaQuery();
+
+    const [open, setOpen] = useState<boolean>(isOpen)
+
+    const onClickHandler = ()=>{
+        action && action()
+        setOpen(false)
+    }
+
     return (
         <Modal
             open={open}
@@ -30,7 +39,7 @@ export const Message: React.FC<PropsType> = (props) => {
                 <Title className={s.title} level={3}>{title}</Title>
                 <Text className={s.message}>{message}</Text>
             </div>
-            <Button className={s.button} size={'large'} type="primary">{action}</Button>
+            <Button onClick={onClickHandler} className={s.button} size={'large'} type="primary">{actionText}</Button>
         </Modal>
     )
 }
