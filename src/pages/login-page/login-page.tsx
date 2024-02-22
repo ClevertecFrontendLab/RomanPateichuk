@@ -14,7 +14,7 @@ import {
     GooglePlusOutlined,
 } from '@ant-design/icons';
 
-import {LogoFormIcon} from "@components/Icon/library.tsx";
+import {LogoFormIcon, SuccessIcon, WarningIcon} from "@components/Icon/library.tsx";
 import useMediaQuery from 'use-media-antd-query';
 import s from './login-page.module.scss'
 import {Message} from "@components/Message/Message.tsx";
@@ -27,9 +27,15 @@ const Login: React.FC = () => {
         alert('Login')
     }
     return (
-        <div className={s.login}>
-            <Input className={s.email} size={'large'} addonBefore="e-mail:"></Input>
-            <Input.Password size={'large'} placeholder="Пароль"></Input.Password>
+        <Form layout={'vertical'} name="login" className={s.login}>
+           <Form.Item name={'email'}>
+               <Input className={s.email} size={'large'} addonBefore="e-mail:"></Input>
+           </Form.Item>
+
+            <Form.Item name={'password'}>
+                <Input.Password size={'large'} placeholder="Пароль"></Input.Password>
+            </Form.Item>
+
             <Space direction={'horizontal'}>
                 <Checkbox>Запомнить меня</Checkbox>
                 <Button type="link">Забыли пароль?</Button>
@@ -38,7 +44,7 @@ const Login: React.FC = () => {
                 Войти
             </Button>
             <Button size={'large'} icon={<GooglePlusOutlined/>}>Войти через Google</Button>
-        </div>
+        </Form>
     )
 }
 
@@ -47,15 +53,24 @@ const SignUp: React.FC = () => {
         alert('SignUp')
     }
     return (
-        <div className={s.signup}>
+        <Form layout={'vertical'}  name="signUp" className={s.signup}>
+            <Form.Item name={'email'}>
             <Input size={'large'} className={s.email} addonBefore="e-mail:"></Input>
-            <Input.Password size={'large'} placeholder="Пароль"></Input.Password>
+            </Form.Item>
+
+            <Form.Item
+                name={'password'}
+                help="Пароль не менее 8 символов, с заглавной буквой и цифрой">
+                <Input.Password size={'large'} placeholder="Пароль"></Input.Password>
+            </Form.Item>
+            <Form.Item name={'password2'}>
             <Input.Password size={'large'} placeholder="Повторите пароль"></Input.Password>
-            <Button size={'large'} onClick={onClickHandler} type="primary" htmlType="submit">
+            </Form.Item>
+                <Button size={'large'} onClick={onClickHandler} type="primary" htmlType="submit">
                 Войти
             </Button>
             <Button size={'large'} icon={<GooglePlusOutlined/>}>Регистрация через Google</Button>
-        </div>
+        </Form>
     )
 }
 
@@ -70,7 +85,7 @@ export const LoginPage: React.FC = () => {
             children: <Login/>,
         },
         {
-            key: 'signUp',
+            key: 'signup',
             label: 'Регистрация',
             children: <SignUp/>,
         },
@@ -89,22 +104,22 @@ export const LoginPage: React.FC = () => {
                 }}
                 width={size === 'xs' ? 328 : 539}
             >
-                <Form className={s.form} layout={'vertical'}>
+                <div className={s.content}>
                     <LogoFormIcon className={s.logo}/>
                     <Tabs
-                        defaultActiveKey="1"
+                        defaultActiveKey="login"
                         items={tabItems}
                         tabBarStyle={{
                             width: '100%',
                             margin: (tab === 'login')
-                                     ? (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.5rem 0' : (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.875rem 0'
+                                ? (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.5rem 0' : (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.875rem 0'
                         }}
                         onChange={(activeKey: string) => {
                             setTab(activeKey)
                         }}
 
                     />
-                </Form>
+                </div>
             </Modal>
             <Message
                 open={false}
@@ -112,6 +127,20 @@ export const LoginPage: React.FC = () => {
                 message={'Такой e-mail уже записан в системе. Попробуйте зарегистрироваться по другому e-mail.'}
                 title={'Данные не сохранились'}
                 action={'Назад к регистрации'}
+            />
+            <Message
+                open={false}
+                icon={<WarningIcon/>}
+                message={'Что-то пошло не так. Попробуйте еще раз'}
+                title={'Вход не выполнен'}
+                action={'Повторить'}
+            />
+            <Message
+                open={false}
+                icon={<SuccessIcon/>}
+                message={'Регистрация прошла успешно. Зайдите в приложение, используя свои e-mail и пароль.'}
+                title={'Регистрация успешна'}
+                action={'Войти'}
             />
         </Layout>
     )
