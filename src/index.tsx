@@ -6,8 +6,6 @@ import { store, history } from '@redux/configure-store';
 import { HistoryRouter } from "redux-first-history/rr6";
 
 import './index.scss';
-import 'antd/dist/antd.css'
-import 'normalize.css';
 
 import {CalendarPage} from "@pages/calendar-page";
 import {LayoutComponent as Layout} from "@components/Layout";

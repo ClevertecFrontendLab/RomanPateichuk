@@ -7,3 +7,15 @@
     color: $color;
     line-height: $line;
 }
+
+%inter-700{
+    font:{
+        family: 'Inter', 'sans-serif';
+        weight: 700;
+
+    }
+}
+
+.class{
+    @extend %inter-700
+}

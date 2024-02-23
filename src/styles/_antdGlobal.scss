@@ -1,0 +1,70 @@
+//----------------------------------------------------------------------------------------------------------------------
+// Form
+//----------------------------------------------------------------------------------------------------------------------
+
+span.ant-input-group-wrapper-status-error .ant-input-group-addon{
+    color: rgba(0, 0, 0, 0.85);
+}
+
+
+input.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:focus{
+    border-left-color: #d9d9d9;
+    box-shadow: none;
+}
+
+input.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+input.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover{
+    border-left-color: #d9d9d9;
+    box-shadow: none;
+}
+
+input.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input{
+    border-left-color: #d9d9d9;
+    box-shadow: none;
+
+}
+
+.input.ant-input-status-error{
+    border-left-color: #d9d9d9;
+    box-shadow: none;
+}
+
+button.ant-btn-primary[disabled],
+button.ant-btn-primary[disabled]:hover,
+button.ant-btn-primary[disabled]:focus,
+button.ant-btn-primary[disabled]:active{
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.02);
+    background: #f5f5f5;
+    border: 1px solid #d9d9d9;
+    span{
+        color: #bfbfbf;
+    }
+}
+
+span.ant-input-affix-wrapper:focus,
+span.ant-input-affix-wrapper-focused,
+input.ant-input:focus
+{
+    border-color: #597ef7;
+    box-shadow: 0 0 0 2px rgba(47, 84, 235, 0.2);
+    span.ant-input-password-icon.anticon{
+        color: #2f54eb;
+    }
+}
+
+span.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover,
+input.ant-input:hover
+{
+    border-color: #597ef7;
+}
+
+span.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper,
+span.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover{
+    span.ant-input-password-icon.anticon{
+        color: #8c8c8c;
+    }
+}

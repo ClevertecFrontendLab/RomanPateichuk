@@ -1,12 +1,7 @@
 @import '../../styles/mixins';
 
 :global {
-    .ant-modal-body {
-        padding: 4rem 5.35rem 10.87rem 5.35rem;
-        @media(max-width: 575px) {
-            padding: 32px 1rem 124px 1rem;
-        }
-    }
+
 
 
     .ant-modal-mask {
@@ -14,6 +9,17 @@
         //backdrop-filter: blur(0.3rem);
     }
 }
+
+
+div.ant-modal-body {
+    padding: 4rem 5.35rem 10.87rem 5.35rem;
+    @media(max-width: 575px) {
+        padding: 32px 1rem 124px 1rem;
+    }
+}
+
+
+
 
 .wrapper {
     min-height: 100vh;
@@ -104,6 +110,8 @@
     }
 
     .signup {
+
+
         :global {
             .ant-form-item{
                 &:nth-child(1){

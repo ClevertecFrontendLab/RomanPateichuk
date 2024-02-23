@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import {useForm, Controller} from "react-hook-form"
+
 import {
     Button,
     Checkbox,
@@ -23,24 +25,39 @@ import {ErrorIcon} from "@components/Icon/library.tsx";
 
 
 const Login: React.FC = () => {
-    const onClickHandler = () => {
-        alert('Login')
+    const handleFormSubmit = (values: any) => {
+        console.log(values)
     }
-    return (
-        <Form layout={'vertical'} name="login" className={s.login}>
-           <Form.Item name={'email'}>
-               <Input className={s.email} size={'large'} addonBefore="e-mail:"></Input>
-           </Form.Item>
 
-            <Form.Item name={'password'}>
-                <Input.Password size={'large'} placeholder="Пароль"></Input.Password>
+    const {control, handleSubmit, formState: {errors}} = useForm()
+    //help={errors.email?.message}
+
+    return (
+        <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
+              className={s.login}>
+            <Form.Item validateStatus={errors.email && 'error'}>
+                <Controller name={'email'}
+                            rules={{required: true,}}
+                            control={control}
+                            render={({field}) =>
+                                <Input size={'large'} {...field} className={s.email}
+                                       addonBefore="e-mail:"/>}/>
+
+            </Form.Item>
+
+            <Form.Item validateStatus={errors.password && 'error'}>
+                <Controller name={'password'} rules={{required: true}} control={control}
+                            render={({field}) =>
+                                <Input.Password {...field} size={'large'}
+                                                placeholder="Пароль"></Input.Password>}/>
+
             </Form.Item>
 
             <Space direction={'horizontal'}>
                 <Checkbox>Запомнить меня</Checkbox>
                 <Button type="link">Забыли пароль?</Button>
             </Space>
-            <Button size={'large'} onClick={onClickHandler} type="primary" htmlType="submit">
+            <Button size={'large'} type="primary" htmlType="submit">
                 Войти
             </Button>
             <Button size={'large'} icon={<GooglePlusOutlined/>}>Войти через Google</Button>
@@ -49,24 +66,65 @@ const Login: React.FC = () => {
 }
 
 const SignUp: React.FC = () => {
-    const onClickHandler = () => {
-        alert('SignUp')
+    const {control, getValues, handleSubmit, formState: {errors}} = useForm({
+        mode: "onChange"
+    })
+    const handleFormSubmit = (value: any) => {
+        alert(value)
     }
     return (
-        <Form layout={'vertical'}  name="signUp" className={s.signup}>
-            <Form.Item name={'email'}>
-            <Input size={'large'} className={s.email} addonBefore="e-mail:"></Input>
+        <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
+              className={s.signup}>
+            <Form.Item validateStatus={errors.email && 'error'}>
+                <Controller name={'email'}
+                            rules={{
+                                required: true,
+                                pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                            }}
+                            control={control}
+                            render={({field}) =>
+                                <Input size={'large'} {...field} className={s.email}
+                                       addonBefore="e-mail:"/>}/>
+
             </Form.Item>
 
-            <Form.Item
-                name={'password'}
-                help="Пароль не менее 8 символов, с заглавной буквой и цифрой">
-                <Input.Password size={'large'} placeholder="Пароль"></Input.Password>
+            <Form.Item validateStatus={errors.password && 'error'}
+                       help={'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
+            >
+                <Controller name={'password'} rules={{
+                    required: true,
+                    pattern: /^(?=.*[A-Z])(?=.*\d).{8,}$/,
+                }}
+                            control={control}
+                            render={({field}) =>
+                                <Input.Password  {...field} size={'large'}
+                                                 placeholder="Пароль"></Input.Password>}/>
+
             </Form.Item>
-            <Form.Item name={'password2'}>
-            <Input.Password size={'large'} placeholder="Повторите пароль"></Input.Password>
+
+            <Form.Item validateStatus={errors.password2 && 'error'}
+                       help={errors.password2 && errors.password2?.message?.toString()}>
+                <Controller name={'password2'} rules={
+                    {
+                        required: true,
+                        validate: (value: string) => {
+                            const {password} = getValues()
+                            return password === value || 'Пароли не совпадают'
+                        },
+                    }
+                }
+
+                            control={control}
+                            render={({field}) => <Input.Password {...field} size={'large'}
+                                                                 placeholder="Повторите пароль"/>}
+                >
+
+
+                </Controller>
+
             </Form.Item>
-                <Button size={'large'} onClick={onClickHandler} type="primary" htmlType="submit">
+            <Button disabled={Object.keys(errors).length > 0} size={'large'} type="primary"
+                    htmlType="submit">
                 Войти
             </Button>
             <Button size={'large'} icon={<GooglePlusOutlined/>}>Регистрация через Google</Button>
@@ -127,7 +185,9 @@ export const LoginPage: React.FC = () => {
                 message={'Такой e-mail уже записан в системе. Попробуйте зарегистрироваться по другому e-mail.'}
                 title={'Данные не сохранились'}
                 actionText={'Назад к регистрации'}
-                action={()=>{alert('Назад к регистрации')}}
+                action={() => {
+                    alert('Назад к регистрации')
+                }}
             />
             <Message
                 isOpen={false}
@@ -135,7 +195,9 @@ export const LoginPage: React.FC = () => {
                 message={'Что-то пошло не так. Попробуйте еще раз'}
                 title={'Вход не выполнен'}
                 actionText={'Повторить'}
-                action={()=>{alert('Повторить')}}
+                action={() => {
+                    alert('Повторить')
+                }}
             />
             <Message
                 isOpen={false}
@@ -143,7 +205,9 @@ export const LoginPage: React.FC = () => {
                 message={'Регистрация прошла успешно. Зайдите в приложение, используя свои e-mail и пароль.'}
                 title={'Регистрация успешна'}
                 actionText={'Войти'}
-                action={()=>{alert('Войти')}}
+                action={() => {
+                    alert('Войти')
+                }}
             />
         </Layout>
     )
