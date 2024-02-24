@@ -22,15 +22,15 @@ import s from './login-page.module.scss'
 import {Message} from "@components/Message/Message.tsx";
 
 import {ErrorIcon} from "@components/Icon/library.tsx";
+import {NavLink, Outlet, useLocation} from "react-router-dom";
 
 
-const Login: React.FC = () => {
+export const Login: React.FC = () => {
     const handleFormSubmit = (values: any) => {
         console.log(values)
     }
 
     const {control, handleSubmit, formState: {errors}} = useForm()
-    //help={errors.email?.message}
 
     return (
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
     )
 }
 
-const SignUp: React.FC = () => {
+export const SignUp: React.FC = () => {
     const {control, getValues, handleSubmit, formState: {errors}} = useForm({
         mode: "onChange"
     })
@@ -135,19 +135,20 @@ const SignUp: React.FC = () => {
 
 export const LoginPage: React.FC = () => {
     const size = useMediaQuery();
-    const [tab, setTab] = useState<string>('login')
+    const location = useLocation();
+    const [tab, setTab] = useState<string>(location.pathname)
+
     const tabItems: TabsProps['items'] = [
         {
-            key: 'login',
-            label: 'Вход',
-            children: <Login/>,
+            key: '/auth',
+            label: <NavLink to={'/auth'}>Вход</NavLink>,
         },
         {
-            key: 'signup',
-            label: 'Регистрация',
-            children: <SignUp/>,
+            key: '/auth/registration',
+            label: <NavLink to={'registration'}>Регистрация</NavLink>,
         },
     ]
+
 
     return (
         <Layout className={s.wrapper}>
@@ -157,7 +158,7 @@ export const LoginPage: React.FC = () => {
                 closable={false}
                 centered
                 bodyStyle={{
-                    height: (tab === 'login') ? (size === 'xs') ? '612px' : '742px' : (size === 'xs') ? '564px' : '686px'
+                    height: (tab === '/auth') ? (size === 'xs') ? '612px' : '742px' : (size === 'xs') ? '564px' : '686px'
 
                 }}
                 width={size === 'xs' ? 328 : 539}
@@ -165,11 +166,11 @@ export const LoginPage: React.FC = () => {
                 <div className={s.content}>
                     <LogoFormIcon className={s.logo}/>
                     <Tabs
-                        defaultActiveKey="login"
+                        defaultActiveKey={tab}
                         items={tabItems}
                         tabBarStyle={{
                             width: '100%',
-                            margin: (tab === 'login')
+                            margin: (tab === '/auth')
                                 ? (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.5rem 0' : (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.875rem 0'
                         }}
                         onChange={(activeKey: string) => {
@@ -177,6 +178,7 @@ export const LoginPage: React.FC = () => {
                         }}
 
                     />
+                    <Outlet/>
                 </div>
             </Modal>
             <Message
