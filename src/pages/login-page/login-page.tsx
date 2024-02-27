@@ -13,7 +13,7 @@ import {
     Input,
     Layout,
     Modal,
-    Space,
+    Space, Spin,
     Tabs,
     TabsProps,
 } from "antd";
@@ -26,10 +26,10 @@ import useMediaQuery from 'use-media-antd-query';
 import s from './login-page.module.scss'
 import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {Loader} from "@components/Loader/Loader.tsx";
+import Loader from "../../assets/loader.json"
 
 export const Login: React.FC = () => {
-    const [login, loginResult] = useLoginMutation();
+    const [login, {isLoading}] = useLoginMutation();
     const [checkEmail, checkEmailResult] = useCheckEmailMutation()
 
     const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
@@ -44,12 +44,10 @@ export const Login: React.FC = () => {
             .then((response) => {
                 console.log(response)
                 return navigate('/auth/confirm-email', {state: email})
-                //return navigate('/main')
-            }).catch((error) => {
-                console.log(error)
-                if (error.data.statusCode === 404) {
-                    return navigate('/result/error-check-email-no-exist')
-                } else {
+            }).catch((e) => {
+                if (e.status === 404) {
+                    return navigate('/result/error-check-email-no-exist')}
+                 else {
                     return navigate('/result/error-check-email')
                 }
 
@@ -90,61 +88,64 @@ export const Login: React.FC = () => {
 
             <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
                   className={s.login}>
-                {loginResult.isLoading  ? <Loader data-test-id='loader'/>
-                    :
-                    <>
-                        <Form.Item validateStatus={errors.email && 'error'}>
-                            {checkEmailResult.isLoading &&  <Loader data-test-id='loader'/>}
-                            <Controller name={'email'}
-                                        rules={{
-                                            required: true,
-                                            pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                        }}
-                                        control={control}
-                                        render={({field}) =>
-                                            <Input size={'large'} {...field} className={s.email}
-                                                   data-test-id='login-email'
-                                                   addonBefore="e-mail:"/>}/>
+                {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
 
-                        </Form.Item>
-                        <Form.Item validateStatus={errors.password && 'error'}>
-                            <Controller name={'password'} rules={{required: true}} control={control}
-                                        render={({field}) =>
-                                            <Input.Password {...field} size={'large'}
-                                                            data-test-id='login-password'
-                                                            placeholder="Пароль"></Input.Password>}/>
+                <Form.Item validateStatus={errors.email && 'error'}>
+                    {checkEmailResult.isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+                    <Controller name={'email'}
+                                rules={{
+                                    required: true,
+                                    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                }}
+                                control={control}
+                                render={({field}) =>
+                                    <Input size={'large'} {...field} className={s.email}
+                                           data-test-id='login-email'
+                                           addonBefore="e-mail:"/>}/>
 
-                        </Form.Item>
-                        <Space direction={'horizontal'}>
+                </Form.Item>
+                <Form.Item validateStatus={errors.password && 'error'}>
+                    <Controller name={'password'} rules={{
+                        required: true,
+                        pattern: /^(?=.*[A-Z])(?=.*\d).{8,}$/,
+                    }}
+                                control={control}
+                                render={({field}) =>
+                                    <Input.Password {...field} size={'large'}
+                                                    data-test-id='login-password'
+                                                    placeholder="Пароль"></Input.Password>}/>
 
-                            <Controller name={'rememberMe'} control={control}
-                                        render={({field}) =>
-                                            <Checkbox
-                                                data-test-id='login-remember'
-                                                {...field}>Запомнить меня</Checkbox>}
-                            />
+                </Form.Item>
+                <Space direction={'horizontal'}>
 
-
-                            <Controller name={'forgetPassword'} control={control}
-                                        render={() => <Button disabled={errors.email}
-                                                              data-test-id='login-forgot-button'
-                                                              onClick={() => {
-                                                                  handleForgetPassword(getValues('email'))
-                                                              }} type="link">Забыли
-                                            пароль?</Button>}
-                            />
+                    <Controller name={'rememberMe'} control={control}
+                                render={({field}) =>
+                                    <Checkbox
+                                        data-test-id='login-remember'
+                                        {...field}>Запомнить меня</Checkbox>}
+                    />
 
 
-                        </Space>
-                        <Button
-                            data-test-id='login-submit-button'
-                            size={'large'} type="primary" htmlType="submit">
-                            Войти
-                        </Button>
-                        <Button size={'large'} icon={<GooglePlusOutlined/>}>Войти через
-                            Google</Button>
-                    </>
-                }
+                    <Controller name={'forgetPassword'} control={control}
+                                render={() => <Button
+                                    data-test-id='login-forgot-button'
+                                    disabled={errors.email}
+                                    onClick={() => {
+                                        handleForgetPassword(getValues('email'))
+                                    }} type="link">Забыли
+                                    пароль?</Button>}
+                    />
+
+
+                </Space>
+                <Button
+                    data-test-id='login-submit-button'
+                    size={'large'} type="primary" htmlType="submit">
+                    Войти
+                </Button>
+
+                <Button size={'large'} icon={<GooglePlusOutlined/>}>Войти через
+                    Google</Button>
             </Form>
 
         </div>
@@ -153,7 +154,7 @@ export const Login: React.FC = () => {
 
 export const SignUp: React.FC = () => {
     const [registration, {isLoading}] = useRegistrationMutation();
-    const prevLocation = useSelector(state => state.router.previousLocations[1].location.pathname)
+    const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
 
 
     const navigate = useNavigate()
@@ -164,14 +165,20 @@ export const SignUp: React.FC = () => {
             email: values.email,
             password: values.password
         }))
-        await registration(values)
+        console.log(values.email)
+        console.log(values.password)
+        await registration(
+            {
+                email: values.email,
+                password: values.password
+            })
             .unwrap()
-            .then(() => {
+            .then((data) => {
                 return navigate('/result/success')
             }).catch(e => {
-                if (e.data.statusCode === 409) {
+                console.log(e)
+                if (e.status === 409) {
                     return navigate('/result/error-user-exist')
-
                 } else {
                     return navigate('/result/error')
                 }
@@ -190,7 +197,7 @@ export const SignUp: React.FC = () => {
     return (
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
               className={s.signup}>
-            {isLoading && <Loader data-test-id='loader'/>}
+            {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
             <Form.Item validateStatus={errors.email && 'error'}>
                 <Controller name={'email'}
                             rules={{
@@ -202,7 +209,7 @@ export const SignUp: React.FC = () => {
                                 <Input
                                     data-test-id='registration-email'
                                     size={'large'} {...field} className={s.email}
-                                       addonBefore="e-mail:"/>}/>
+                                    addonBefore="e-mail:"/>}/>
 
             </Form.Item>
 
@@ -218,7 +225,7 @@ export const SignUp: React.FC = () => {
                                 <Input.Password
                                     data-test-id='registration-password'
                                     {...field} size={'large'}
-                                                 placeholder="Пароль"></Input.Password>}/>
+                                    placeholder="Пароль"></Input.Password>}/>
 
             </Form.Item>
 
@@ -238,7 +245,7 @@ export const SignUp: React.FC = () => {
                             render={({field}) => <Input.Password
                                 data-test-id='registration-confirm-password'
                                 {...field} size={'large'}
-                                                                 placeholder="Повторите пароль"/>}
+                                placeholder="Повторите пароль"/>}
                 >
 
 
@@ -248,7 +255,7 @@ export const SignUp: React.FC = () => {
             <Button
                 data-test-id='registration-submit-button'
                 disabled={Object.keys(errors).length > 0} size={'large'} type="primary"
-                    htmlType="submit">
+                htmlType="submit">
                 Войти
             </Button>
             <Button size={'large'} icon={<GooglePlusOutlined/>}>Регистрация через Google</Button>
@@ -305,36 +312,6 @@ export const LoginPage: React.FC = () => {
                     <Outlet/>
                 </div>
             </Modal>
-            {/*<Message*/}
-            {/*    isOpen={false}*/}
-            {/*    icon={<ErrorIcon/>}*/}
-            {/*    message={'Такой e-mail уже записан в системе. Попробуйте зарегистрироваться по другому e-mail.'}*/}
-            {/*    title={'Данные не сохранились'}*/}
-            {/*    actionText={'Назад к регистрации'}*/}
-            {/*    action={() => {*/}
-            {/*        alert('Назад к регистрации')*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<Message*/}
-            {/*    isOpen={false}*/}
-            {/*    icon={<WarningIcon/>}*/}
-            {/*    message={'Что-то пошло не так. Попробуйте еще раз'}*/}
-            {/*    title={'Вход не выполнен'}*/}
-            {/*    actionText={'Повторить'}*/}
-            {/*    action={() => {*/}
-            {/*        alert('Повторить')*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<Message*/}
-            {/*    isOpen={false}*/}
-            {/*    icon={<SuccessIcon/>}*/}
-            {/*    message={'Регистрация прошла успешно. Зайдите в приложение, используя свои e-mail и пароль.'}*/}
-            {/*    title={'Регистрация успешна'}*/}
-            {/*    actionText={'Войти'}*/}
-            {/*    action={() => {*/}
-            {/*        alert('Войти')*/}
-            {/*    }}*/}
-            {/*/>*/}
         </Layout>
     )
 }

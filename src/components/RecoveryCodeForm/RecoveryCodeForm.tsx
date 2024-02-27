@@ -7,7 +7,7 @@ import VerificationInput from "react-verification-input"
 import {useLocation} from 'react-router-dom';
 import {useConfirmEmailMutation} from "@redux/api/authApi.ts";
 import {Loader} from "@components/Loader/Loader.tsx";
-
+import className from "classnames"
 
 
 
@@ -15,6 +15,7 @@ const {Title, Text} = Typography;
 
 export const RecoveryCodeForm: React.FC = ()=>{
 
+    const [verificationCode, setVerificationCode] = useState('');
     const [error, setError] = useState('no error')
 
 
@@ -36,11 +37,16 @@ export const RecoveryCodeForm: React.FC = ()=>{
                 return navigate('/auth/change-password')
                 //return navigate('/main')
             }).catch((error)=>{
-                setError(error.data)
+                setError(error)
+                setVerificationCode('');
             })
-
-
     }
+
+
+    const handleVerificationChange = (value) => {
+        // Обработка изменений в поле ввода
+        setVerificationCode(value);
+    };
 
     return (
         <Layout className={s.wrapper}>
@@ -53,17 +59,26 @@ export const RecoveryCodeForm: React.FC = ()=>{
                 width={size === 'xs' ? 328 : 539}
             >
                 {isLoading && <Loader data-test-id='loader'/>}
+                {JSON.stringify(error)}
                 <div className={s.middle}>
-                    {JSON.stringify(error)}
                     <Title className={s.title} level={3}>Введите код для восстановления аккауанта</Title>
                     <Text className={s.message}>Мы отправили вам на e-mail victorbyden@gmail.com шестизначный код. Введите его в поле ниже.</Text>
 
+                    <div data-test-id='verification-input'>
                     <VerificationInput
-                        data-test-id='verification-input'
-                                       onComplete={(value)=>{onCompleteHandler(value)}}
+                        classNames={{
+                            container: {backgroundColor: "red"},
+                            character: "character",
+                            characterInactive: "character--inactive",
+                            characterSelected: "character--selected",
+                            characterFilled: "character--filled",
+                        }}
+                        onComplete={(value)=>{onCompleteHandler(value)}}
+                        value={verificationCode}
+                        onChange={handleVerificationChange}
                     />
-
-                    <Text className={s.message}>Не пришло письмо? Проверьте папку Спам.</Text>
+                    </div>
+                    <Text data-test-id='login-forgot-button' className={s.message}>Не пришло письмо? Проверьте папку Спам.</Text>
                 </div>
 
             </Modal>

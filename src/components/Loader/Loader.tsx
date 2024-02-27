@@ -1,5 +1,5 @@
 import React from "react"
-import loader from "./loader.json"
+import loader from "../../assets/loader.json"
 import Lottie from 'lottie-react'
 import s from "./Loader.module.scss"
 
@@ -13,8 +13,6 @@ export const Loader: React.FC = ()=>{
             loop={true}
             className={s.loader}
             />
-
-
         </div>
     )
 }

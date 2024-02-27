@@ -1,7 +1,17 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-const token: string | null = JSON.parse(localStorage.getItem("token")) ?? JSON.parse(sessionStorage.getItem("token"));
-console.log('token in authApi: ', token)
+const tokenStorage: string | null = JSON.parse(localStorage.getItem("token"));
+const tokenSession: string | null = JSON.parse(sessionStorage.getItem("token"));
+
+let token = '';
+if(tokenStorage){
+    token = tokenStorage
+}
+else{
+    token = tokenSession
+}
+
+console.log('token:', token)
 // const [items, setItems] = useState([]);
 //
 // useEffect(() => {
@@ -42,7 +52,7 @@ export const authApi = createApi({
         }),
 
         registration: build.mutation({
-            query: (body) => ({
+            query: (body:any) => ({
                 url: '/auth/registration',
                 method: 'POST',
                 body,

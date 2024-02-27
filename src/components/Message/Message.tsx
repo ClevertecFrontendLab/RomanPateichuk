@@ -13,10 +13,11 @@ type PropsType = {
     actionText: string
     url: string
     icon: ReactNode
+    testId: string,
 }
 
 export const Message: React.FC<PropsType> = (props) => {
-    const {title, message, icon, actionText, isOpen, url} = props
+    const {title, testId, message, icon, actionText, isOpen, url} = props
     const size = useMediaQuery();
 
     const [open, setOpen] = useState<boolean>(isOpen)
@@ -47,7 +48,7 @@ export const Message: React.FC<PropsType> = (props) => {
                     <Title className={s.title} level={3}>{title}</Title>
                     <Text className={s.message}>{message}</Text>
                 </div>
-                <Button onClick={onClickHandler} className={s.button} size={'large'}
+                <Button data-test-id={testId} onClick={onClickHandler} className={s.button} size={'large'}
                         type="primary">{actionText}</Button>
             </Modal>
         </Layout>
