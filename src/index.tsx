@@ -19,7 +19,7 @@ import {Message} from "@components/Message/Message.tsx";
 import {Login, SignUp} from "@pages/login-page/login-page.tsx";
 import {RecoveryCodeForm} from "@components/RecoveryCodeForm/RecoveryCodeForm.tsx";
 import {RecoveryPasswordForm} from "@components/RecoveryPasswordForm/RecoveryPasswordForm.tsx";
-import {Auth} from "@components/Auth/Auth.tsx";
+
 
 
 
@@ -119,7 +119,7 @@ root.render(
 
 
                     <Route path='/' element={<Layout />}>
-                        <Route path='main' element={ <Auth><MainPage /></Auth>}></Route>
+                        <Route path='main' element={ <MainPage />}></Route>
                         <Route path='calendar' element={<CalendarPage/>}></Route>
                         <Route path='training' element={<TrainingPage/>}></Route>
                         <Route path='progress' element={<ProgressPage/>}></Route>

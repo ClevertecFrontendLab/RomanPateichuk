@@ -26,16 +26,16 @@ import useMediaQuery from 'use-media-antd-query';
 import s from './login-page.module.scss'
 import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
-
+import {Loader} from "@components/Loader/Loader.tsx";
 
 export const Login: React.FC = () => {
-    const [login, {isLoading}] = useLoginMutation();
-    const [checkEmail] = useCheckEmailMutation()
+    const [login, loginResult] = useLoginMutation();
+    const [checkEmail, checkEmailResult] = useCheckEmailMutation()
 
     const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
     const navigate = useNavigate()
 
-    const handleForgetPassword = useCallback(async (email: string)=> {
+    const handleForgetPassword = useCallback(async (email: string) => {
         localStorage.setItem('email', JSON.stringify(email))
         await checkEmail({
             "email": email
@@ -45,12 +45,11 @@ export const Login: React.FC = () => {
                 console.log(response)
                 return navigate('/auth/confirm-email', {state: email})
                 //return navigate('/main')
-            }).catch((error)=>{
+            }).catch((error) => {
                 console.log(error)
-                if(error.data.statusCode === 404){
+                if (error.data.statusCode === 404) {
                     return navigate('/result/error-check-email-no-exist')
-                }
-                else{
+                } else {
                     return navigate('/result/error-check-email')
                 }
 
@@ -61,89 +60,99 @@ export const Login: React.FC = () => {
 
 
     useEffect(() => {
-        if(prevLocation === '/result/error-check-email'){
+        if (prevLocation === '/result/error-check-email') {
             handleForgetPassword(JSON.parse(localStorage.getItem("email")))
         }
     }, [handleForgetPassword, prevLocation]);
 
 
-
-
-
     const handleFormSubmit = async (values) => {
         await login(values)
-              .unwrap()
-              .then((response) => {
-                  if(values.rememberMe){
-                      localStorage.setItem('token', JSON.stringify(response['accessToken']))
-                  }
-                  else{
-                      sessionStorage.setItem('token', JSON.stringify(response['accessToken']))
-                  }
-                  return navigate('/main')
-             }).catch(()=>{
+            .unwrap()
+            .then((response) => {
+                if (values.rememberMe) {
+                    localStorage.setItem('token', JSON.stringify(response['accessToken']))
+                } else {
+                    sessionStorage.setItem('token', JSON.stringify(response['accessToken']))
+                }
+                return navigate('/main')
+            }).catch(() => {
                 return navigate('/result/error-login')
             })
     }
 
-    const {control,getValues, handleSubmit, formState: {errors}} = useForm({
+    const {control, getValues, handleSubmit, formState: {errors}} = useForm({
         mode: "onChange"
     })
 
     return (
         <div>
-            {isLoading && <div>Loading...</div>}
-        <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
-              className={s.login}>
-            <Form.Item validateStatus={errors.email && 'error'}>
-                <Controller name={'email'}
-                            rules={{
-                                required: true,
-                                pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                            }}
-                            control={control}
-                            render={({field}) =>
-                                <Input size={'large'} {...field} className={s.email}
-                                       addonBefore="e-mail:"/>}/>
 
-            </Form.Item>
+            <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
+                  className={s.login}>
+                {loginResult.isLoading  ? <Loader data-test-id='loader'/>
+                    :
+                    <>
+                        <Form.Item validateStatus={errors.email && 'error'}>
+                            {checkEmailResult.isLoading &&  <Loader data-test-id='loader'/>}
+                            <Controller name={'email'}
+                                        rules={{
+                                            required: true,
+                                            pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                        }}
+                                        control={control}
+                                        render={({field}) =>
+                                            <Input size={'large'} {...field} className={s.email}
+                                                   data-test-id='login-email'
+                                                   addonBefore="e-mail:"/>}/>
 
-            <Form.Item validateStatus={errors.password && 'error'}>
-                <Controller name={'password'} rules={{required: true}} control={control}
-                            render={({field}) =>
-                                <Input.Password {...field} size={'large'}
-                                                placeholder="Пароль"></Input.Password>}/>
+                        </Form.Item>
+                        <Form.Item validateStatus={errors.password && 'error'}>
+                            <Controller name={'password'} rules={{required: true}} control={control}
+                                        render={({field}) =>
+                                            <Input.Password {...field} size={'large'}
+                                                            data-test-id='login-password'
+                                                            placeholder="Пароль"></Input.Password>}/>
 
-            </Form.Item>
+                        </Form.Item>
+                        <Space direction={'horizontal'}>
 
-            <Space direction={'horizontal'}>
-
-                <Controller name={'rememberMe'}  control={control}
-                            render={({ field})=>
-                                <Checkbox {...field}>Запомнить меня</Checkbox>}
-                />
-
-
-                    <Controller name={'forgetPassword'} control={control}
-                                render={()=><Button disabled={errors.email} onClick={()=>{handleForgetPassword(getValues('email'))}}  type="link">Забыли пароль?</Button>}
-                    />
-
-
-
-            </Space>
-            <Button size={'large'} type="primary" htmlType="submit">
-                Войти
-            </Button>
+                            <Controller name={'rememberMe'} control={control}
+                                        render={({field}) =>
+                                            <Checkbox
+                                                data-test-id='login-remember'
+                                                {...field}>Запомнить меня</Checkbox>}
+                            />
 
 
-            <Button size={'large'} icon={<GooglePlusOutlined/>}>Войти через Google</Button>
-        </Form>
+                            <Controller name={'forgetPassword'} control={control}
+                                        render={() => <Button disabled={errors.email}
+                                                              data-test-id='login-forgot-button'
+                                                              onClick={() => {
+                                                                  handleForgetPassword(getValues('email'))
+                                                              }} type="link">Забыли
+                                            пароль?</Button>}
+                            />
+
+
+                        </Space>
+                        <Button
+                            data-test-id='login-submit-button'
+                            size={'large'} type="primary" htmlType="submit">
+                            Войти
+                        </Button>
+                        <Button size={'large'} icon={<GooglePlusOutlined/>}>Войти через
+                            Google</Button>
+                    </>
+                }
+            </Form>
+
         </div>
     )
 }
 
 export const SignUp: React.FC = () => {
-    const [registration] = useRegistrationMutation();
+    const [registration, {isLoading}] = useRegistrationMutation();
     const prevLocation = useSelector(state => state.router.previousLocations[1].location.pathname)
 
 
@@ -151,17 +160,19 @@ export const SignUp: React.FC = () => {
 
 
     const handleFormSubmit = useCallback(async (values) => {
-        localStorage.setItem('registrationData', JSON.stringify({email: values.email, password: values.password}))
+        localStorage.setItem('registrationData', JSON.stringify({
+            email: values.email,
+            password: values.password
+        }))
         await registration(values)
             .unwrap()
             .then(() => {
                 return navigate('/result/success')
-            }).catch(e=>{
-                if(e.data.statusCode === 409){
+            }).catch(e => {
+                if (e.data.statusCode === 409) {
                     return navigate('/result/error-user-exist')
 
-                }
-                else{
+                } else {
                     return navigate('/result/error')
                 }
             })
@@ -171,18 +182,15 @@ export const SignUp: React.FC = () => {
     })
 
     useEffect(() => {
-        if(prevLocation === '/result/error'){
+        if (prevLocation === '/result/error') {
             handleFormSubmit(JSON.parse(localStorage.getItem("registrationData")))
         }
     }, [handleFormSubmit, prevLocation]);
 
-
-
-
-
     return (
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
               className={s.signup}>
+            {isLoading && <Loader data-test-id='loader'/>}
             <Form.Item validateStatus={errors.email && 'error'}>
                 <Controller name={'email'}
                             rules={{
@@ -191,7 +199,9 @@ export const SignUp: React.FC = () => {
                             }}
                             control={control}
                             render={({field}) =>
-                                <Input size={'large'} {...field} className={s.email}
+                                <Input
+                                    data-test-id='registration-email'
+                                    size={'large'} {...field} className={s.email}
                                        addonBefore="e-mail:"/>}/>
 
             </Form.Item>
@@ -205,7 +215,9 @@ export const SignUp: React.FC = () => {
                 }}
                             control={control}
                             render={({field}) =>
-                                <Input.Password  {...field} size={'large'}
+                                <Input.Password
+                                    data-test-id='registration-password'
+                                    {...field} size={'large'}
                                                  placeholder="Пароль"></Input.Password>}/>
 
             </Form.Item>
@@ -223,7 +235,9 @@ export const SignUp: React.FC = () => {
                 }
 
                             control={control}
-                            render={({field}) => <Input.Password {...field} size={'large'}
+                            render={({field}) => <Input.Password
+                                data-test-id='registration-confirm-password'
+                                {...field} size={'large'}
                                                                  placeholder="Повторите пароль"/>}
                 >
 
@@ -231,7 +245,9 @@ export const SignUp: React.FC = () => {
                 </Controller>
 
             </Form.Item>
-            <Button disabled={Object.keys(errors).length > 0} size={'large'} type="primary"
+            <Button
+                data-test-id='registration-submit-button'
+                disabled={Object.keys(errors).length > 0} size={'large'} type="primary"
                     htmlType="submit">
                 Войти
             </Button>

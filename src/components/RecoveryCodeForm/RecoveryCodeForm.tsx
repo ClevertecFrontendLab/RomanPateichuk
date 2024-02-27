@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import VerificationInput from "react-verification-input"
 import {useLocation} from 'react-router-dom';
 import {useConfirmEmailMutation} from "@redux/api/authApi.ts";
+import {Loader} from "@components/Loader/Loader.tsx";
 
 
 
@@ -20,7 +21,7 @@ export const RecoveryCodeForm: React.FC = ()=>{
     const location = useLocation();
     const size = useMediaQuery();
     const navigate = useNavigate()
-    const [confirmEmail] = useConfirmEmailMutation()
+    const [confirmEmail, {isLoading}] = useConfirmEmailMutation()
 
 
 
@@ -51,13 +52,14 @@ export const RecoveryCodeForm: React.FC = ()=>{
                 bodyStyle={{height: size === 'xs' ? '315px' : '363px'}}
                 width={size === 'xs' ? 328 : 539}
             >
-
+                {isLoading && <Loader data-test-id='loader'/>}
                 <div className={s.middle}>
                     {JSON.stringify(error)}
                     <Title className={s.title} level={3}>Введите код для восстановления аккауанта</Title>
                     <Text className={s.message}>Мы отправили вам на e-mail victorbyden@gmail.com шестизначный код. Введите его в поле ниже.</Text>
 
                     <VerificationInput
+                        data-test-id='verification-input'
                                        onComplete={(value)=>{onCompleteHandler(value)}}
                     />
 

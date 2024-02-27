@@ -5,10 +5,11 @@ import s from "@pages/login-page/login-page.module.scss";
 import {Controller, useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {Loader} from "@components/Loader/Loader.tsx";
 
 
 export const RecoveryPasswordForm: React.FC = ()=>{
-    const [changePassword] = useChangePasswordMutation()
+    const [changePassword, {isLoading}] = useChangePasswordMutation()
     const navigate = useNavigate()
 
     const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
@@ -48,7 +49,7 @@ export const RecoveryPasswordForm: React.FC = ()=>{
 
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
               className={s.signup}>
-
+            {isLoading && <Loader data-test-id='loader'/>}
             <Form.Item validateStatus={errors.password && 'error'}
                        help={'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
             >
@@ -58,7 +59,9 @@ export const RecoveryPasswordForm: React.FC = ()=>{
                 }}
                             control={control}
                             render={({field}) =>
-                                <Input.Password  {...field} size={'large'}
+                                <Input.Password
+                                    data-test-id='change-password'
+                                    {...field} size={'large'}
                                                  placeholder="Пароль"></Input.Password>}/>
 
             </Form.Item>
@@ -76,7 +79,9 @@ export const RecoveryPasswordForm: React.FC = ()=>{
                 }
 
                             control={control}
-                            render={({field}) => <Input.Password {...field} size={'large'}
+                            render={({field}) => <Input.Password
+                                data-test-id='change-confirm-password'
+                                {...field} size={'large'}
                                                                  placeholder="Повторите пароль"/>}
                 >
 
@@ -84,7 +89,9 @@ export const RecoveryPasswordForm: React.FC = ()=>{
                 </Controller>
 
             </Form.Item>
-            <Button  size={'large'} type="primary"
+            <Button
+                data-test-id='change-submit-button'
+                size={'large'} type="primary"
                     htmlType="submit">
                 Сохранить
             </Button>
