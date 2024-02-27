@@ -5,15 +5,14 @@
 
     .ant-modal-mask {
         background: rgba(121, 156, 212, 0.5);
-        //backdrop-filter: blur(0.3rem);
     }
 }
 
 
 div.ant-modal-body {
-    padding: 4rem 5.35rem 10.87rem 5.35rem;
+    padding: 4rem 5.35rem 10.87rem;
     @media(max-width: 575px) {
-        padding: 32px 1rem 124px 1rem;
+        padding: 32px 1rem 124px;
     }
 }
 
@@ -118,20 +117,6 @@ div.ant-modal-body {
 
             .ant-form-item-explain {
                 @include Font($size: .75rem, $color: var(--gray-7));
-            }
-
-            .ant-input-affix-wrapper {
-                &:nth-child(2) {
-                    //margin-bottom: 2.875rem;
-                }
-
-                &:nth-child(3) {
-                    // margin-bottom: 3.875rem;
-                    @media(max-width: 575px) {
-                        //margin-bottom: 3.375rem;
-                    }
-                }
-
             }
 
             .ant-tabs {

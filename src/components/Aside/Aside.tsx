@@ -61,7 +61,11 @@ export const Aside: React.FC = () => {
 
     const onClickMenuHandler: MenuProps['onClick'] = (e) => {
         if (e.key === 'logout')
-            alert('logout')
+        {
+            sessionStorage.removeItem("token");
+            localStorage.removeItem("token");
+            navigate('/auth')
+        }
         else
             navigate(e.key)
     };

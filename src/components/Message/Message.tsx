@@ -11,22 +11,24 @@ type PropsType = {
     title: string
     message: string
     actionText: string
-    action: () => void
     url: string
     icon: ReactNode
 }
 
 export const Message: React.FC<PropsType> = (props) => {
-    const {title, message, icon, actionText, action, isOpen, url} = props
+    const {title, message, icon, actionText, isOpen, url} = props
     const size = useMediaQuery();
 
     const [open, setOpen] = useState<boolean>(isOpen)
     const navigate = useNavigate()
 
     const onClickHandler = () => {
-        action && action()
         setOpen(false)
-        return  navigate(url)
+
+        if(url){
+           return navigate(url)
+        }
+
     }
 
     return (

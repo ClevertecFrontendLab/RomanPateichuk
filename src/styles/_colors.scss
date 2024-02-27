@@ -1,5 +1,4 @@
 :root{
-
     --color-menu-button-icon:  #061178;
     --color-task-button-icon:  #2f54eb;
     --color-aside-boxshadow: rgba(0, 0, 0, 0.15);
@@ -12,7 +11,6 @@
     --color-description-main: #061178;
     --color-text-minor: #8c8c8c;
     --color-bxs-btn-inset: #f0f0f0;
-
     --enter-page-light-bg: url('./assets/enter page_light.jpg');
     --enter-page-dark-bg: url('/');
     --main-page-light-bg: url('./assets/main_page_light.jpg');
@@ -29,7 +27,6 @@
     --geekblue-light-8: #10239e;
     --geekblue-light-9: #061178;
     --geekblue-light-10: #030852;
-
     --geekblue-dark-1: #131629;
     --geekblue-dark-2: #161d40;
     --geekblue-dark-3: #1c2755;
@@ -42,7 +39,7 @@
     --geekblue-dark-10: #d2e0fa;
 
     /* Neutral Color Palette */
-    --gray-1: #ffffff;
+    --gray-1: #fff;
     --gray-2: #fafafa;
     --gray-3: #f5f5f5;
     --gray-4: #f0f0f0;
@@ -54,8 +51,7 @@
     --gray-10: #262626;
     --gray-11: #1f1f1f;
     --gray-12: #141414;
-    --gray-13: #000000;
-
+    --gray-13: #000;
     --primary-text-color: #262626;
     --secondary-text-color: #8c8c8c;
     --disabled-color: #bfbfbf;
@@ -66,10 +62,8 @@
 
     /* Functional Color */
     --link-color: #2f54eb;
-
     --form-box-shadow-error-active: '0 0 0 2px rgba(255, 38, 5, 0.06)';
     --form-border-color-error: '1px solid #ff4d4f';
-
     --form-box-shadow-active: '0 0 0 2px rgba(47, 84, 235, 0.2);';
     --form-border-hover: '1px solid #597ef7;'
 
