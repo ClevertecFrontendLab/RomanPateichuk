@@ -27,7 +27,7 @@ export const RecoveryPasswordForm: React.FC = ()=>{
             confirmPassword: values.password
         })
             .unwrap()
-            .then((response) => {
+            .then(() => {
                 return navigate('/result/success-change-password')
             }).catch(()=>{
                 return navigate('/result/error-change-password')

@@ -1,5 +1,4 @@
 import React from 'react';
-import {Routes} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import {createRoot} from 'react-dom/client';
 import {store, history} from '@redux/configure-store';

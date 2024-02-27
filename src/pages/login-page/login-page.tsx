@@ -182,7 +182,7 @@ export const SignUp: React.FC = () => {
                 password: values.password
             })
             .unwrap()
-            .then((data) => {
+            .then(() => {
                 return navigate('/result/success')
             }).catch(e => {
                 console.log(e)

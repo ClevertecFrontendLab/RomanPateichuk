@@ -4,7 +4,6 @@ import s from "./RecoveryCodeForm.module.scss";
 import useMediaQuery from "use-media-antd-query";
 import {useNavigate} from "react-router-dom";
 import VerificationInput from "react-verification-input"
-import {useLocation} from 'react-router-dom';
 import {useConfirmEmailMutation} from "@redux/api/authApi.ts";
 import {Loader} from "@components/Loader/Loader.tsx";
 import {getStorageItem} from "@utils/index.ts";
@@ -18,9 +17,6 @@ export const RecoveryCodeForm: React.FC = ()=>{
 
     const [verificationCode, setVerificationCode] = useState('');
     const [error, setError] = useState(false)
-
-
-    const location = useLocation();
     const size = useMediaQuery();
     const navigate = useNavigate()
     const [confirmEmail, {isLoading}] = useConfirmEmailMutation()
@@ -35,9 +31,9 @@ export const RecoveryCodeForm: React.FC = ()=>{
             "code": value
         })
             .unwrap()
-            .then((response) => {
+            .then(() => {
                 return navigate('/auth/change-password')
-            }).catch((error)=>{
+            }).catch(()=>{
                 setError(true)
                 setVerificationCode('');
             })
