@@ -27,6 +27,7 @@ import s from './login-page.module.scss'
 import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Loader from "../../assets/loader.json"
+import {getStorageItem} from "@utils/index.ts";
 
 export const Login: React.FC = () => {
     const [login, {isLoading}] = useLoginMutation();
@@ -35,8 +36,13 @@ export const Login: React.FC = () => {
     const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
     const navigate = useNavigate()
 
-    const handleForgetPassword = useCallback(async (email: string) => {
+    const handleForgetPassword = useCallback(async (email: string, setError: ()=>void) => {
+        if(!email){
+            setError('email', {type:'pattern', message: ''});
+            return;
+        }
         localStorage.setItem('email', JSON.stringify(email))
+
         await checkEmail({
             "email": email
         })
@@ -59,7 +65,8 @@ export const Login: React.FC = () => {
 
     useEffect(() => {
         if (prevLocation === '/result/error-check-email') {
-            handleForgetPassword(JSON.parse(localStorage.getItem("email")))
+            handleForgetPassword(getStorageItem(localStorage, "email"))
+            //handleForgetPassword(JSON.parse(localStorage.getItem("email")))
         }
     }, [handleForgetPassword, prevLocation]);
 
@@ -79,9 +86,11 @@ export const Login: React.FC = () => {
             })
     }
 
-    const {control, getValues, handleSubmit, formState: {errors}} = useForm({
+    const {control, setError, getValues, handleSubmit, formState: {errors}} = useForm({
         mode: "onChange"
     })
+
+    console.log(errors)
 
     return (
         <div>
@@ -129,9 +138,9 @@ export const Login: React.FC = () => {
                     <Controller name={'forgetPassword'} control={control}
                                 render={() => <Button
                                     data-test-id='login-forgot-button'
-                                    disabled={errors.email}
+                                    disabled={!!errors.email}
                                     onClick={() => {
-                                        handleForgetPassword(getValues('email'))
+                                        handleForgetPassword(getValues('email'), setError)
                                     }} type="link">Забыли
                                     пароль?</Button>}
                     />
@@ -190,7 +199,8 @@ export const SignUp: React.FC = () => {
 
     useEffect(() => {
         if (prevLocation === '/result/error') {
-            handleFormSubmit(JSON.parse(localStorage.getItem("registrationData")))
+            handleFormSubmit(getStorageItem(localStorage, 'registrationData'))
+            //handleFormSubmit(JSON.parse(localStorage.getItem('registrationData')))
         }
     }, [handleFormSubmit, prevLocation]);
 
@@ -254,7 +264,7 @@ export const SignUp: React.FC = () => {
             </Form.Item>
             <Button
                 data-test-id='registration-submit-button'
-                disabled={Object.keys(errors).length > 0} size={'large'} type="primary"
+                size={'large'} type="primary"
                 htmlType="submit">
                 Войти
             </Button>
@@ -272,11 +282,11 @@ export const LoginPage: React.FC = () => {
     const tabItems: TabsProps['items'] = [
         {
             key: '/auth',
-            label: <NavLink to={'/auth'}>Вход</NavLink>,
+            label: <NavLink className={s.link} to={'/auth'}>Вход</NavLink>,
         },
         {
             key: '/auth/registration',
-            label: <NavLink to={'registration'}>Регистрация</NavLink>,
+            label: <NavLink className={s.link} to={'/auth/registration'}>Регистрация</NavLink>,
         },
     ]
 

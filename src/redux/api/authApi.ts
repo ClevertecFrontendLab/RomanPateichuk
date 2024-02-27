@@ -1,25 +1,29 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-const tokenStorage: string | null = JSON.parse(localStorage.getItem("token"));
-const tokenSession: string | null = JSON.parse(sessionStorage.getItem("token"));
+const getToken = (storage: Storage) => {
+    try {
+        const token = storage.getItem("token");
+        return token ? JSON.parse(token) : null;
+    } catch {
+        return null;
+    }
+};
 
-let token = '';
-if(tokenStorage){
-    token = tokenStorage
-}
-else{
-    token = tokenSession
-}
+const tokenStorage = getToken(localStorage);
+const tokenSession = getToken(sessionStorage);
 
-console.log('token:', token)
-// const [items, setItems] = useState([]);
-//
-// useEffect(() => {
-//     const items = JSON.parse(localStorage.getItem('items'));
-//     if (items) {
-//         setItems(items);
-//     }
-// }, []);
+const token = tokenStorage || tokenSession;
+
+// const tokenStorage: string | null = JSON.parse(localStorage.getItem("token"));
+// const tokenSession: string | null = JSON.parse(sessionStorage.getItem("token"));
+
+// let token = '';
+// if(tokenStorage){
+//     token = tokenStorage
+// }
+// else{
+//     token = tokenSession
+// }
 
 
 export const authApi = createApi({

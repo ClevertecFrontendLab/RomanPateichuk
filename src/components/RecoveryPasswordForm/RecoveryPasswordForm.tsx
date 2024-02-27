@@ -1,12 +1,14 @@
 import React, {useCallback, useEffect} from 'react'
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, Layout, Modal, Spin, Typography} from "antd";
 import {useChangePasswordMutation} from "@redux/api/authApi.ts";
-import s from "@pages/login-page/login-page.module.scss";
+import s from "./Recovery.Password.module.scss";
 import {Controller, useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {Loader} from "@components/Loader/Loader.tsx";
-
+import useMediaQuery from "use-media-antd-query";
+import {getStorageItem} from "@utils/index.ts";
+const {Title} = Typography;
 
 export const RecoveryPasswordForm: React.FC = ()=>{
     const [changePassword, {isLoading}] = useChangePasswordMutation()
@@ -26,7 +28,6 @@ export const RecoveryPasswordForm: React.FC = ()=>{
         })
             .unwrap()
             .then((response) => {
-                console.log(response)
                 return navigate('/result/success-change-password')
             }).catch(()=>{
                 return navigate('/result/error-change-password')
@@ -39,17 +40,27 @@ export const RecoveryPasswordForm: React.FC = ()=>{
 
     useEffect(() => {
         if(prevLocation === '/result/error-change-password'){
-            handleFormSubmit(JSON.parse(localStorage.getItem("changePassword")))
+            handleFormSubmit(getStorageItem(localStorage, 'changePassword'))
+
         }
     }, [handleFormSubmit, prevLocation]);
 
-
+    const size = useMediaQuery();
 
     return (
-
+        <Layout className={s.wrapper}>
+            <Modal
+                open={true}
+                footer={null}
+                closable={false}
+                centered
+                bodyStyle={{height: size === 'xs' ? '457px' : '428px'}}
+                width={size === 'xs' ? 328 : 539}
+            >
+        <Title level={3} className={s.title}>Восстановление аккауанта</Title>
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
               className={s.signup}>
-            {isLoading && <Loader data-test-id='loader'/>}
+            {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
             <Form.Item validateStatus={errors.password && 'error'}
                        help={'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
             >
@@ -81,6 +92,7 @@ export const RecoveryPasswordForm: React.FC = ()=>{
                             control={control}
                             render={({field}) => <Input.Password
                                 data-test-id='change-confirm-password'
+
                                 {...field} size={'large'}
                                                                  placeholder="Повторите пароль"/>}
                 >
@@ -92,10 +104,13 @@ export const RecoveryPasswordForm: React.FC = ()=>{
             <Button
                 data-test-id='change-submit-button'
                 size={'large'} type="primary"
+                type="primary"
                     htmlType="submit">
                 Сохранить
             </Button>
         </Form>
+            </Modal>
+        </Layout>
 
     )
 }

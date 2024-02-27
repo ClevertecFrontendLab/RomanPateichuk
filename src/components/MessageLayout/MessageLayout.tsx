@@ -2,7 +2,7 @@ import React, {ReactNode, useState} from "react";
 import {Button, Layout, Modal, Typography} from "antd";
 
 const {Title, Text} = Typography;
-import s from './Message.module.scss'
+import s from './MessageLayout.module.scss'
 import useMediaQuery from 'use-media-antd-query';
 import {useNavigate} from "react-router-dom";
 
@@ -16,7 +16,7 @@ type PropsType = {
     testId: string,
 }
 
-export const Message: React.FC<PropsType> = (props) => {
+export const MessageLayout: React.FC<PropsType> = (props) => {
     const {title, testId, message, icon, actionText, isOpen, url} = props
     const size = useMediaQuery();
 
@@ -27,7 +27,7 @@ export const Message: React.FC<PropsType> = (props) => {
         setOpen(false)
 
         if(url){
-           return navigate(url)
+            return navigate(url)
         }
 
     }

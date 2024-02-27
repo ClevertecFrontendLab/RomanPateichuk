@@ -9,6 +9,7 @@
 }
 
 
+
 div.ant-modal-body {
     padding: 4rem 5.35rem 10.87rem;
     @media(max-width: 575px) {
@@ -28,6 +29,12 @@ div.ant-modal-body {
     flex-direction: column;
     height: 100%;
     width: 100%;
+
+    .link{
+        display: block;
+        padding: 12px 0;
+
+    }
 
     .logo {
         display: flex;
