@@ -1,0 +1,82 @@
+@import '../../styles/mixins';
+
+.aside {
+        box-shadow: 0 2px 8px 0 var(--color-aside-boxshadow);
+        background: var(--color-bg-major);
+
+        .menu {
+            @include Font($size: .88rem);
+            display: flex;
+            flex-direction: column;
+            border: none;
+            gap: .5rem;
+            @media(max-width: 479px) {
+                gap: .25rem;
+            }
+            li {
+                margin: 0;
+                color: var(--color-menu-button-icon);
+                @media(max-width: 479px) {
+                    padding: 0;
+                    span {
+                        font-size: 0.88rem;
+
+                        &:first-child {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    box-shadow: inset 0 1px 0 0 #f0f0f0;
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    padding: 0;
+                    span {
+                        padding-left: 1rem;
+                        &:nth-child(2) {
+                            margin-left: .5rem;
+                        @media(max-width: 360px){
+                            margin-left: 1rem;
+                        }
+                        }
+                    }
+                }
+            }
+        }
+
+        .switcher {
+            padding: 0;
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translate(0, -50%);
+            height: 4.125rem;
+            width: 0;
+            border-left: 1.25rem solid  #fff;
+            border-top: .5rem solid transparent;
+            border-bottom: .5rem solid transparent;
+
+            svg{
+                position: relative;
+                top: 50%;
+                left: -1rem;
+                color: #8C8C8C;
+            }
+
+            @media(max-width: 479px) {
+                height: 48px;
+                border-top: 4px solid transparent;
+                border-bottom: 4px solid transparent;
+                border-left: 2.2rem solid  #fff;
+                top: 3rem;
+                svg{
+                    left: -1.5rem;
+                    color: #8C8C8C;
+                }
+            }
+        }
+
+
+    }

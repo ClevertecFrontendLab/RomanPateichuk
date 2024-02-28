@@ -1,0 +1,232 @@
+@import '../../styles/mixins';
+
+:global {
+
+
+    .ant-modal-mask {
+        background: rgba(121, 156, 212, 0.5);
+    }
+}
+
+
+
+div.ant-modal-body {
+    padding: 4rem 5.35rem 10.87rem;
+    @media(max-width: 575px) {
+        padding: 32px 1rem 124px;
+    }
+}
+
+
+.wrapper {
+    min-height: 100vh;
+    background-image: var(--enter-page-light-bg);
+    background-size: cover;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    .link{
+        display: block;
+        padding: 12px 0;
+
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3rem;
+
+        @media(max-width: 575px) {
+            margin-bottom: 2.2rem;
+            svg {
+                width: 203px;
+                height: 50px;
+            }
+        }
+
+    }
+
+    .login {
+        :global {
+            .ant-form-item {
+                &:nth-child(1) {
+                    margin-bottom: 2rem;
+                }
+
+                &:nth-child(2) {
+                    margin-bottom: 3.125rem;
+                    @media(max-width: 575px) {
+                        margin-bottom: 3rem;
+                    }
+                }
+            }
+
+            .ant-space {
+                width: 100%;
+                margin-bottom: 1.25rem;
+                justify-content: space-between;
+                @media(max-width: 575px) {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            .ant-btn-link {
+                @include Font($color: var(--link-color));
+                padding: 0;
+                @media(max-width: 575px) {
+                    @include Font($size: .875rem, $color: var(--link-color));
+                    padding: 0 .45rem;
+                }
+            }
+
+            .ant-checkbox-wrapper {
+                .ant-checkbox {
+                    &-checked {
+                        .ant-checkbox-inner {
+                            background-color: var(--link-color);
+                        }
+                    }
+                }
+
+                span {
+                    @include Font($size: .875rem)
+                }
+
+            }
+
+        }
+    }
+
+    .signup {
+        :global {
+            .ant-form-item {
+                &:nth-child(1) {
+                    margin-bottom: 2rem;
+                }
+
+                &:nth-child(2) {
+                    margin-bottom: 3rem;
+                }
+
+                &:nth-child(3) {
+                    margin-bottom: 3.875rem;
+                    @media(max-width: 575px) {
+                        margin-bottom: 3.3rem;
+                    }
+                }
+            }
+
+            .ant-form-item-explain {
+                @include Font($size: .75rem, $color: var(--gray-7));
+            }
+
+            .ant-tabs {
+                background-color: red;
+            }
+
+        }
+    }
+
+    .email {
+        @include Font($size: .875rem);
+
+        :global {
+            .ant-input-group-addon {
+                padding: 0 12.5px;
+            }
+        }
+
+    }
+
+
+    :global {
+        .ant-btn-primary {
+            background-color: var(--link-color);
+            display: block;
+            width: 100%;
+            margin-bottom: 1rem;
+
+            span {
+                @include Font($color: var(--gray-1));
+                @media(max-width: 575px) {
+                    @include Font($color: var(--gray-1), $size: .875rem);
+                }
+            }
+        }
+
+        .ant-btn-default {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            span {
+                @include Font();
+                @media(max-width: 575px) {
+                    :nth-child(1) {
+                        display: none;
+                    }
+                    @include Font($size: .875rem);
+                }
+            }
+
+        }
+
+        .ant-tabs {
+            &-tab {
+                justify-content: center;
+                width: 50%;
+
+                & + .ant-tabs-tab {
+                    margin: 0
+                }
+
+                a {
+                    @include Font();
+                    @media(max-width: 575px) {
+                        @include Font($size: .875rem);
+                    }
+                }
+
+
+                &-active {
+                    .ant-tabs-tab-btn {
+                        a.active {
+                            color: var(--link-color);
+                        }
+
+                    }
+
+                }
+            }
+
+            &-ink-bar {
+                width: 100%;
+                background-color: var(--link-color);
+            }
+
+            &-nav-list {
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
