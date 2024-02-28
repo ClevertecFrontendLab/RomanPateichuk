@@ -1,11 +1,9 @@
 import React, {useState} from "react";
-import s from "./Aside.module.scss";
+import styles from "./Aside.module.scss";
 import {Button, Layout, Menu, MenuProps} from "antd";
 import {
-    CleverIcon,
+
     ExitIcon,
-    FitIcon,
-    LogoIcon
 
 } from "@components/Icon/library.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -13,6 +11,7 @@ import {
     HeartFilled, TrophyOutlined, MenuFoldOutlined,
     MenuUnfoldOutlined, CalendarTwoTone, IdcardOutlined
 } from "@ant-design/icons";
+import {Logo} from "@components/Logo/Logo.tsx";
 
 const {Sider} = Layout;
 
@@ -21,8 +20,6 @@ export const Aside: React.FC = () => {
     const [collapsed, setCollapsed] = useState<boolean>(true);
     const [siderBreakpointXS, setSiderBreakpointXS] = useState<boolean>(false)
 
-    const Logo = () => (<div className={s.logo}>{siderBreakpointXS ? <LogoIcon/> : !collapsed ? <>
-        <CleverIcon/><FitIcon/></> : <FitIcon/>}</div>)
 
     const navigate = useNavigate()
 
@@ -70,7 +67,7 @@ export const Aside: React.FC = () => {
             navigate(e.key)
     };
 
-    return <Sider className={s.aside} collapsed={collapsed}
+    return <Sider className={styles.aside} collapsed={collapsed}
                   breakpoint="xs"
                   width={siderBreakpointXS ? 106 : 208}
                   trigger={null}
@@ -86,14 +83,14 @@ export const Aside: React.FC = () => {
                   }}
 
     >
-        {Logo()}
-        <Menu className={s.menu}
+        <Logo siderBreakpointXS={siderBreakpointXS} collapsed={collapsed} />
+        <Menu className={styles.menu}
               onClick={onClickMenuHandler}
               defaultSelectedKeys={[location.pathname.slice(1)]}
               mode="vertical" items={menuItems}/>
         {
 
-            <Button className={s.switcher} type="link"
+            <Button className={styles.switcher} type="link"
                     data-test-id={siderBreakpointXS ? "sider-switch-mobile" : "sider-switch"}
                     onClick={() => setCollapsed((prev) => !prev)}>
                 {

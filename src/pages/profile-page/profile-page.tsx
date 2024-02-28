@@ -1,9 +1,9 @@
 import React from 'react'
-import s from './profile-page.module.scss'
+import styles from './profile-page.module.scss'
 
 export const ProfilePage: React.FC = ()=>{
     return (
-        <div className={s.wrapper}>
+        <div className={styles.wrapper}>
             <p>Профиль</p>
         </div>
 

@@ -12,16 +12,5 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const tokenSession = getStorageItem(sessionStorage, "token");
     const token = tokenStorage || tokenSession;
 
-    // const tokenStorage: string | null = JSON.parse(localStorage.getItem("token"));
-    // const tokenSession: string | null = JSON.parse(sessionStorage.getItem("token"));
-    //
-    // let token = '';
-    // if(tokenStorage){
-    //     token = tokenStorage
-    // }
-    // else{
-    //     token = tokenSession
-    // }
-
     return token ? children : <Navigate to="/auth" replace />;
 };

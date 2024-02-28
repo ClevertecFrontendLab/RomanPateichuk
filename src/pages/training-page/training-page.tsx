@@ -1,9 +1,9 @@
 import React from 'react'
-import s from './training-page.module.scss'
+import styles from './training-page.module.scss'
 
 export const TrainingPage: React.FC = ()=>{
     return (
-        <div className={s.wrapper}>
+        <div className={styles.wrapper}>
             <p>Тренировки</p>
         </div>
 

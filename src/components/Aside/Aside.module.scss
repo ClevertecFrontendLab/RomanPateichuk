@@ -4,16 +4,6 @@
         box-shadow: 0 2px 8px 0 var(--color-aside-boxshadow);
         background: var(--color-bg-major);
 
-        .logo {
-            display: flex;
-            justify-content: center;
-            margin: 3.125rem 0 4rem;
-            @media (max-width: 360px) {
-                margin: 1rem 0 1.5rem;
-            }
-
-        }
-
         .menu {
             @include Font($size: .88rem);
             display: flex;

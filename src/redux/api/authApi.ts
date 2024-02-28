@@ -1,30 +1,10 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {getStorageItem} from "@utils/index.ts";
 
-const getToken = (storage: Storage) => {
-    try {
-        const token = storage.getItem("token");
-        return token ? JSON.parse(token) : null;
-    } catch {
-        return null;
-    }
-};
-
-const tokenStorage = getToken(localStorage);
-const tokenSession = getToken(sessionStorage);
+const tokenStorage = getStorageItem(localStorage, "token");
+const tokenSession = getStorageItem(sessionStorage, "token");
 
 const token = tokenStorage || tokenSession;
-
-// const tokenStorage: string | null = JSON.parse(localStorage.getItem("token"));
-// const tokenSession: string | null = JSON.parse(sessionStorage.getItem("token"));
-
-// let token = '';
-// if(tokenStorage){
-//     token = tokenStorage
-// }
-// else{
-//     token = tokenSession
-// }
-
 
 export const authApi = createApi({
     reducerPath: 'authApi',
@@ -43,7 +23,6 @@ export const authApi = createApi({
         }),
 
         authWithGoogle: build.query({
-            // todo
             query: () => "/auth/google",
         }),
 

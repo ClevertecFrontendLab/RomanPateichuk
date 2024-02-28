@@ -23,11 +23,12 @@ import {
 
 import {LogoFormIcon} from "@components/Icon/library.tsx";
 import useMediaQuery from 'use-media-antd-query';
-import s from './login-page.module.scss'
+import styles from './login-page.module.scss'
 import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Loader from "../../assets/loader.json"
 import {getStorageItem} from "@utils/index.ts";
+import {EComponentStatus} from "@types/components.ts";
 
 export const Login: React.FC = () => {
     const [login, {isLoading}] = useLoginMutation();
@@ -36,9 +37,9 @@ export const Login: React.FC = () => {
     const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
     const navigate = useNavigate()
 
-    const handleForgetPassword = useCallback(async (email: string, setError: ()=>void) => {
-        if(!email){
-            setError('email', {type:'pattern', message: ''});
+    const handleForgetPassword = useCallback(async (email: string, setError: () => void) => {
+        if (!email) {
+            setError('email', {type: 'pattern', message: ''});
             return;
         }
         localStorage.setItem('email', JSON.stringify(email))
@@ -47,13 +48,12 @@ export const Login: React.FC = () => {
             "email": email
         })
             .unwrap()
-            .then((response) => {
-                console.log(response)
+            .then(() => {
                 return navigate('/auth/confirm-email', {state: email})
             }).catch((e) => {
-                if (e.status === 404) {
-                    return navigate('/result/error-check-email-no-exist')}
-                 else {
+                if (e.status === EComponentStatus.S404) {
+                    return navigate('/result/error-check-email-no-exist')
+                } else {
                     return navigate('/result/error-check-email')
                 }
 
@@ -66,7 +66,6 @@ export const Login: React.FC = () => {
     useEffect(() => {
         if (prevLocation === '/result/error-check-email') {
             handleForgetPassword(getStorageItem(localStorage, "email"))
-            //handleForgetPassword(JSON.parse(localStorage.getItem("email")))
         }
     }, [handleForgetPassword, prevLocation]);
 
@@ -90,13 +89,11 @@ export const Login: React.FC = () => {
         mode: "onChange"
     })
 
-    console.log(errors)
-
     return (
         <div>
 
             <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
-                  className={s.login}>
+                  className={styles.login}>
                 {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
 
                 <Form.Item validateStatus={errors.email && 'error'}>
@@ -108,7 +105,7 @@ export const Login: React.FC = () => {
                                 }}
                                 control={control}
                                 render={({field}) =>
-                                    <Input size={'large'} {...field} className={s.email}
+                                    <Input size={'large'} {...field} className={styles.email}
                                            data-test-id='login-email'
                                            addonBefore="e-mail:"/>}/>
 
@@ -174,8 +171,6 @@ export const SignUp: React.FC = () => {
             email: values.email,
             password: values.password
         }))
-        console.log(values.email)
-        console.log(values.password)
         await registration(
             {
                 email: values.email,
@@ -185,8 +180,7 @@ export const SignUp: React.FC = () => {
             .then(() => {
                 return navigate('/result/success')
             }).catch(e => {
-                console.log(e)
-                if (e.status === 409) {
+                if (e.status === EComponentStatus.S409) {
                     return navigate('/result/error-user-exist')
                 } else {
                     return navigate('/result/error')
@@ -200,13 +194,12 @@ export const SignUp: React.FC = () => {
     useEffect(() => {
         if (prevLocation === '/result/error') {
             handleFormSubmit(getStorageItem(localStorage, 'registrationData'))
-            //handleFormSubmit(JSON.parse(localStorage.getItem('registrationData')))
         }
     }, [handleFormSubmit, prevLocation]);
 
     return (
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
-              className={s.signup}>
+              className={styles.signup}>
             {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
             <Form.Item validateStatus={errors.email && 'error'}>
                 <Controller name={'email'}
@@ -218,7 +211,7 @@ export const SignUp: React.FC = () => {
                             render={({field}) =>
                                 <Input
                                     data-test-id='registration-email'
-                                    size={'large'} {...field} className={s.email}
+                                    size={'large'} {...field} className={styles.email}
                                     addonBefore="e-mail:"/>}/>
 
             </Form.Item>
@@ -282,37 +275,51 @@ export const LoginPage: React.FC = () => {
     const tabItems: TabsProps['items'] = [
         {
             key: '/auth',
-            label: <NavLink className={s.link} to={'/auth'}>Вход</NavLink>,
+            label: <NavLink className={styles.link} to={'/auth'}>Вход</NavLink>,
         },
         {
             key: '/auth/registration',
-            label: <NavLink className={s.link} to={'/auth/registration'}>Регистрация</NavLink>,
+            label: <NavLink className={styles.link} to={'/auth/registration'}>Регистрация</NavLink>,
         },
     ]
 
+    const calculateModalHeight = useCallback(() => {
+        if (tab === '/auth') {
+            return (size === 'xs') ? '612px' : '742px'
+        } else {
+            return (size === 'xs') ? '564px' : '686px'
+        }
+    }, [tab])
+
+    const calculateTabsMargin = useCallback(() => {
+        if (tab === '/auth') {
+            return (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.5rem 0'
+        } else {
+            return (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.875rem 0'
+        }
+    }, [tab])
+
 
     return (
-        <Layout className={s.wrapper}>
+        <Layout className={styles.wrapper}>
             <Modal
                 open={true}
                 footer={null}
                 closable={false}
                 centered
                 bodyStyle={{
-                    height: (tab === '/auth') ? (size === 'xs') ? '612px' : '742px' : (size === 'xs') ? '564px' : '686px'
-
+                    height: calculateModalHeight()
                 }}
                 width={size === 'xs' ? 328 : 539}
             >
-                <div className={s.content}>
-                    <LogoFormIcon className={s.logo}/>
+                <div className={styles.content}>
+                    <LogoFormIcon className={styles.logo}/>
                     <Tabs
                         defaultActiveKey={tab}
                         items={tabItems}
                         tabBarStyle={{
                             width: '100%',
-                            margin: (tab === '/auth')
-                                ? (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.5rem 0' : (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.875rem 0'
+                            margin: calculateTabsMargin()
                         }}
                         onChange={(activeKey: string) => {
                             setTab(activeKey)
