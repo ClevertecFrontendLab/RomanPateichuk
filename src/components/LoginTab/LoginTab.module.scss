@@ -1,0 +1,52 @@
+@import '../../styles/mixins';
+
+.login {
+    :global {
+        .ant-form-item {
+            &:nth-child(1) {
+                margin-bottom: 2rem;
+            }
+
+            &:nth-child(2) {
+                margin-bottom: 3.125rem;
+                @media(max-width: 575px) {
+                    margin-bottom: 3rem;
+                }
+            }
+        }
+
+        .ant-space {
+            width: 100%;
+            margin-bottom: 1.25rem;
+            justify-content: space-between;
+            @media(max-width: 575px) {
+                margin-bottom: 1rem;
+            }
+        }
+
+        .ant-btn-link {
+            @include Font($color: var(--link-color));
+            padding: 0;
+            @media(max-width: 575px) {
+                @include Font($size: .875rem, $color: var(--link-color));
+                padding: 0 .45rem;
+            }
+        }
+
+        .ant-checkbox-wrapper {
+            .ant-checkbox {
+                &-checked {
+                    .ant-checkbox-inner {
+                        background-color: var(--link-color);
+                    }
+                }
+            }
+
+            span {
+                @include Font($size: .875rem)
+            }
+
+        }
+
+    }
+}

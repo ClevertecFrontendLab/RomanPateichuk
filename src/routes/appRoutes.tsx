@@ -1,5 +1,7 @@
 import {Navigate, useRoutes} from 'react-router-dom';
-import {Login, LoginPage, SignUp} from "@pages/login-page/login-page";
+import {LoginPage} from "@pages/login-page/login-page";
+import {LoginTab} from '@components/LoginTab/LoginTab'
+import {RegistrationTab} from "@components/RegistrationTab/RegistrationTab.tsx";
 import {CalendarPage} from "@pages/calendar-page";
 import {TrainingPage} from "@pages/training-page";
 import {ProgressPage} from "@pages/progress-page";
@@ -12,7 +14,6 @@ import {MainPage} from "@pages/main-page";
 import {RecoveryPasswordForm} from "@components/RecoveryPasswordForm/RecoveryPasswordForm.tsx";
 import {RecoveryCodeForm} from "@components/RecoveryCodeForm/RecoveryCodeForm.tsx";
 
-
 export const routesConfig = [
     {
         path: '/auth',
@@ -20,10 +21,10 @@ export const routesConfig = [
         children: [
             {
                 index: true,
-                element: <Login/>
+                element: <LoginTab/>
             },
             {
-                element: <SignUp/>,
+                element: <RegistrationTab/>,
                 path: 'registration'
             },
 

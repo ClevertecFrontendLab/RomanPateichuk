@@ -6,6 +6,9 @@ interface ProtectedRouteProps {
     children: ReactNode;
 }
 
+const searchParams = new URLSearchParams(window.location.search);
+const paramValue = searchParams.get('accessToken');
+paramValue && localStorage.setItem('token', JSON.stringify(paramValue))
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const tokenStorage = getStorageItem(localStorage, "token");

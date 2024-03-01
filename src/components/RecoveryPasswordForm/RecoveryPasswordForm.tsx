@@ -4,17 +4,17 @@ import {useChangePasswordMutation} from "@redux/api/authApi.ts";
 import styles from "./Recovery.Password.module.scss";
 import {Controller, useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {Loader} from "@components/Loader/Loader.tsx";
 import useMediaQuery from "use-media-antd-query";
 import {getStorageItem} from "@utils/index.ts";
+import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
 const {Title} = Typography;
 
 export const RecoveryPasswordForm: React.FC = () => {
     const [changePassword, {isLoading}] = useChangePasswordMutation()
     const navigate = useNavigate()
 
-    const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
+    const prevLocation = useAppSelector(state => state.router.previousLocations[1]?.location.pathname)
 
     const handleFormSubmit = useCallback(async (values) => {
         localStorage.setItem('changePassword', JSON.stringify({

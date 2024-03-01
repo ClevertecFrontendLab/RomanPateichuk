@@ -10,16 +10,16 @@ export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery(
         {
-        baseUrl: 'https://marathon-api.clevertec.ru/',
-        credentials: "include",
+            baseUrl: 'https://marathon-api.clevertec.ru/',
+            credentials: "include",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-    }),
+        }),
 
     endpoints: (build) => ({
         authMe: build.query({
-            query: (me)=> `/user/${me}`,
+            query: (me) => `/user/${me}`,
         }),
 
         authWithGoogle: build.query({
@@ -69,4 +69,12 @@ export const authApi = createApi({
     })
 })
 
-export const {useChangePasswordMutation, useConfirmEmailMutation, useCheckEmailMutation, useAuthMeQuery, useAuthWithGoogleQuery, useLoginMutation, useRegistrationMutation } = authApi
+export const {
+    useChangePasswordMutation,
+    useConfirmEmailMutation,
+    useCheckEmailMutation,
+    authWithGoogle,
+    useAuthWithGoogleQuery,
+    useLoginMutation,
+    useRegistrationMutation
+} = authApi

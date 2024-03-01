@@ -3,9 +3,9 @@
     font-weight: 700;
     font-style: normal;
     src:
-    url('./src/styles/fonts/Inter-Bold.woff2') format("woff2"),
-    url('./src/styles/fonts/Inter-Bold.woff') format("woff"),
-    url('./src/styles/fonts/Inter-Bold.ttf') format('truetype');
+    url('src/assets/fonts/Inter-Bold.woff2') format("woff2"),
+    url('src/assets/fonts/Inter-Bold.woff') format("woff"),
+    url('src/assets/fonts/Inter-Bold.ttf') format('truetype');
     font-display: swap;
 }
 
@@ -14,9 +14,9 @@
     font-weight: 500;
     font-style: normal;
     src:
-    url('./src/styles/fonts/Inter-Medium.woff') format("woff2"),
-    url('./src/styles/fonts/Inter-Medium.woff') format("woff"),
-    url('./src/styles/fonts/Inter-Medium.ttf') format('truetype');
+    url('src/assets/fonts/Inter-Medium.woff') format("woff2"),
+    url('src/assets/fonts/Inter-Medium.woff') format("woff"),
+    url('src/assets/fonts/Inter-Medium.ttf') format('truetype');
     font-display: swap;
 }
 
@@ -25,9 +25,9 @@
     font-weight: 400;
     font-style: normal;
     src:
-    url('./src/styles/fonts/Inter-Regular.woff') format("woff2"),
-    url('./src/styles/fonts/Inter-Regular.woff') format("woff"),
-    url('./src/styles/fonts/Inter-Regular.ttf') format('truetype');
+    url('src/assets/fonts/Inter-Regular.woff') format("woff2"),
+    url('src/assets/fonts/Inter-Regular.woff') format("woff"),
+    url('src/assets/fonts/Inter-Regular.ttf') format('truetype');
     font-display: swap;
 }
 
