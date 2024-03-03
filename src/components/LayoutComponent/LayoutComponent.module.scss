@@ -1,0 +1,21 @@
+@import '../../styles/mixins';
+
+.ant-layout-has-sider{
+    .ant-layout{
+        .breadcrumb {
+            padding-bottom: .875rem;
+            @media (max-width: 360px) {
+                padding-bottom: 0;
+            }
+            .item {
+                @include Font(.875rem);
+                margin: 0 0 .875rem;
+            }
+        }
+    }
+
+}
+
+
+
+
