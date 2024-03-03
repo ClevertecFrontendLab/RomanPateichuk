@@ -32,7 +32,7 @@ import {EComponentStatus} from "@types/components.ts";
 
 export const Login: React.FC = () => {
     const [login, {isLoading}] = useLoginMutation();
-    const [checkEmail, checkEmailResult] = useCheckEmailMutation()
+    const [checkEmail, isFetching] = useCheckEmailMutation()
 
     const prevLocation = useSelector(state => state.router.previousLocations[1]?.location.pathname)
     const navigate = useNavigate()
@@ -94,10 +94,9 @@ export const Login: React.FC = () => {
 
             <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
                   className={styles.login}>
-                {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+                {(isLoading || isFetching) && <Spin indicator={Loader} data-test-id="loader"/>}
 
                 <Form.Item validateStatus={errors.email && 'error'}>
-                    {checkEmailResult.isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
                     <Controller name={'email'}
                                 rules={{
                                     required: true,
