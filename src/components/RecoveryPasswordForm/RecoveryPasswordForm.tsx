@@ -104,7 +104,6 @@ export const RecoveryPasswordForm: React.FC = () => {
                     <Button
                         data-test-id='change-submit-button'
                         size={'large'} type="primary"
-                        type="primary"
                         htmlType="submit">
                         Сохранить
                     </Button>

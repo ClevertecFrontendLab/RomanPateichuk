@@ -5,6 +5,8 @@ import {
     HeartFilled, CalendarTwoTone, IdcardOutlined
 } from "@ant-design/icons";
 import {Button, Layout, Space, Typography} from "antd";
+import {HeaderComponent as Header} from "@components/Header";
+import {NavLink} from "react-router-dom";
 
 const {Content,} = Layout;
 
@@ -12,7 +14,10 @@ const {Link, Paragraph, Text} = Typography;
 
 export const MainPage: React.FC = () => {
     return (
+        <>
+        <Header/>
         <Content className={styles.main}>
+
             <div className={styles.content}>
                 <Paragraph className={styles.description}>
                     С CleverFit ты сможешь:
@@ -63,9 +68,7 @@ export const MainPage: React.FC = () => {
             </div>
             <div className={styles.bottom_block}>
                 <Space wrap={true} className={styles.links_wrapper}>
-                    <Link href="/" className={styles.link}>
-                        Смотреть отзывы
-                    </Link>
+                    <NavLink className={styles.link} to={'/feedbacks'}>Смотреть отзывы</NavLink>
                 </Space>
 
                 <div className={styles.download_block}>
@@ -84,5 +87,6 @@ export const MainPage: React.FC = () => {
                 </div>
             </div>
         </Content>
+        </>
     );
 };

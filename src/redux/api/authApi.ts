@@ -22,10 +22,6 @@ export const authApi = createApi({
             query: (me) => `/user/${me}`,
         }),
 
-        authWithGoogle: build.query({
-            query: () => "/auth/google",
-        }),
-
         login: build.mutation({
             query: (body) => ({
                 url: '/auth/login',
@@ -71,10 +67,8 @@ export const authApi = createApi({
 
 export const {
     useChangePasswordMutation,
-    useConfirmEmailMutation,
     useCheckEmailMutation,
-    authWithGoogle,
-    useAuthWithGoogleQuery,
+    useConfirmEmailMutation,
     useLoginMutation,
     useRegistrationMutation
 } = authApi
