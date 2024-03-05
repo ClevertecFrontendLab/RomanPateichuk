@@ -56,11 +56,12 @@ export const RecoveryPasswordForm: React.FC = () => {
                 bodyStyle={{height: size === 'xs' ? '457px' : '428px'}}
                 width={size === 'xs' ? 328 : 539}
             >
+                {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
                 <Title level={3} className={styles.title}>Восстановление аккауанта</Title>
                 <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'}
                       name="signUp"
                       className={styles.signup}>
-                    {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+
                     <Form.Item validateStatus={errors.password && 'error'}
                                help={'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
                     >

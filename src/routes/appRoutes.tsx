@@ -14,6 +14,7 @@ import {MainPage} from "@pages/main-page";
 import {RecoveryPasswordForm} from "@components/RecoveryPasswordForm/RecoveryPasswordForm.tsx";
 import {RecoveryCodeForm} from "@components/RecoveryCodeForm/RecoveryCodeForm.tsx";
 import {FeedbacksPage} from "@pages/feedbacks-page/feedbacks-page.tsx";
+import {useEffect} from "react";
 
 export const routesConfig = [
     {
@@ -152,6 +153,18 @@ export const routesConfig = [
 ];
 
 export const AppRoutes = () => {
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            sessionStorage.clear()
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        };
+    }, [])
+
     const element = useRoutes(routesConfig);
     return element;
 };

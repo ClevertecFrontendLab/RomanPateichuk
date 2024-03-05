@@ -68,7 +68,7 @@ export const MainPage: React.FC = () => {
             </div>
             <div className={styles.bottom_block}>
                 <Space wrap={true} className={styles.links_wrapper}>
-                    <NavLink className={styles.link} to={'/feedbacks'}>Смотреть отзывы</NavLink>
+                    <NavLink data-test-id='see-reviews' className={styles.link} to={'/feedbacks'}>Смотреть отзывы</NavLink>
                 </Space>
 
                 <div className={styles.download_block}>

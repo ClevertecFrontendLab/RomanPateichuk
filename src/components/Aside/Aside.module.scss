@@ -3,7 +3,7 @@
 .aside {
         box-shadow: 0 2px 8px 0 var(--color-aside-boxshadow);
         background: var(--color-bg-major);
-
+        z-index: 1000;
         .menu {
             @include Font($size: .88rem);
             display: flex;

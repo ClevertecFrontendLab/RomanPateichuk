@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import React, {ReactNode, useEffect} from 'react';
 import {Navigate} from 'react-router-dom';
 import {getStorageItem} from "@utils/index.ts";
 
@@ -10,10 +10,11 @@ const searchParams = new URLSearchParams(window.location.search);
 const paramValue = searchParams.get('accessToken');
 paramValue && localStorage.setItem('token', JSON.stringify(paramValue))
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProtectedRoute = React.memo(({ children }: ProtectedRouteProps) => {
+
     const tokenStorage = getStorageItem(localStorage, "token");
     const tokenSession = getStorageItem(sessionStorage, "token");
     const token = tokenStorage || tokenSession;
 
     return token ? children : <Navigate to="/auth" replace />;
-};
+});

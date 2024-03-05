@@ -6,6 +6,7 @@ import {Aside} from "@components/Aside";
 import styles from "./LayoutComponent.module.scss";
 
 export const LayoutComponent: React.FC = () => {
+
     return (
         <Layout style={{minHeight: '100vh'}}>
            <Aside/>

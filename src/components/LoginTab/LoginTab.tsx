@@ -16,7 +16,7 @@ import {useNavigate} from "react-router-dom";
 
 export const LoginTab: React.FC = () => {
     const [login, {isLoading}] = useLoginMutation();
-    const [checkEmail, checkEmailResult] = useCheckEmailMutation()
+    const [checkEmail, checkEmailResult, isFetching] = useCheckEmailMutation()
 
 
     const prevLocation = useAppSelector(state => state.router.previousLocations[1]?.location.pathname)
@@ -83,7 +83,7 @@ export const LoginTab: React.FC = () => {
 
             <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
                   className={styles.login}>
-                {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+                {(isLoading || isFetching) && <Spin indicator={Loader} data-test-id="loader"/>}
 
                 <Form.Item validateStatus={errors.email && 'error'}>
                     {checkEmailResult.isLoading && <Spin indicator={Loader} data-test-id="loader"/>}

@@ -3,6 +3,8 @@ import {Button, Form, Modal, Rate} from "antd";
 import {Input} from 'antd';
 import {Controller, useForm, useWatch} from "react-hook-form";
 import {useSendFeedBackMutation} from "@redux/api/feedBackApi.ts";
+import styles from './CreateFeedBackForm.module.scss'
+import {StarFilled, StarOutlined} from "@ant-design/icons";
 
 
 const {TextArea} = Input;
@@ -58,33 +60,42 @@ export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props)
             open={open}
             footer={null}
             onCancel={handleCancel}
+            className={styles.modal}
         >
-            <Form onSubmitCapture={handleSubmit(handleFormSubmit)}>
-                <Form.Item>
+            <Form className={styles.form} onSubmitCapture={handleSubmit(handleFormSubmit)}>
+                <Form.Item className={styles.rateFormItem}>
                     <Controller name={'rating'}
                                 rules={{
-                                    required: true,
+                                    //required: true,
                                 }}
                                 control={control}
                                 render={({ field}) =>
-                                    <Rate {...field}/>}/>
+                                    <Rate className={styles.rate}  {...field} count={5} character={({ index, value }) => {
+                                        if (index + 1 <= value) {
+                                            return <StarFilled className={styles.starIcon}/>;
+                                        } else {
+                                            return <StarOutlined className={styles.starIcon} />;
+                                        }
+                                    }}
+                                    />}/>
                 </Form.Item>
 
-                <Form.Item>
+                <Form.Item className={styles.message}>
                     <Controller name={'message'}
                                 control={control}
                                 render={({ field}) => <TextArea
-
-                                    rows={4} {...field} />}
+                                    placeholder={'Autosize height based on content lines'}
+                                    autoSize={{ minRows: 2}} {...field} />}
                     />
                 </Form.Item>
 
 
-                <Form.Item>
+                <Form.Item className={styles.button}>
                     <Button
+                        data-test-id='new-review-submit-button'
                         type={'primary'}
                         htmlType="submit"
-                        disabled={!watchedRatingField}
+                        // disabled={!watchedRatingField}
                     >Опубликовать</Button>
                 </Form.Item>
 

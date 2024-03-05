@@ -1,19 +1,22 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {getStorageItem} from "@utils/index.ts";
 
-const tokenStorage = getStorageItem(localStorage, "token");
-const tokenSession = getStorageItem(sessionStorage, "token");
-
-const token = tokenStorage || tokenSession;
-
 export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery(
         {
             baseUrl: 'https://marathon-api.clevertec.ru/',
-            credentials: "include",
-            headers: {
-                Authorization: `Bearer ${token}`,
+            prepareHeaders: (headers) => {
+                const tokenStorage = getStorageItem(localStorage, "token")
+                const tokenSession = getStorageItem(sessionStorage, "token")
+
+                const token = tokenStorage || tokenSession
+
+                if (token) {
+                    headers.set('Authorization', `Bearer ${token}`)
+                }
+
+                return headers;
             },
         }),
 
