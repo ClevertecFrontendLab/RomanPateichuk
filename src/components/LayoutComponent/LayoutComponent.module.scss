@@ -1,0 +1,11 @@
+@import '../../styles/mixins';
+
+        .breadcrumb {
+            background: var(--color-header-bg);
+            padding: 1rem 1.5rem;
+            @include Font($size: 14px);
+        }
+
+
+
+

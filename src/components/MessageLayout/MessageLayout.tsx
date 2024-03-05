@@ -7,7 +7,6 @@ import useMediaQuery from 'use-media-antd-query';
 import {useNavigate} from "react-router-dom";
 
 type PropsType = {
-    isOpen: boolean
     title: string
     message: string
     actionText: string
@@ -16,10 +15,10 @@ type PropsType = {
     testId: string,
 }
 
-export const MessageLayout: React.FC<PropsType> = ({title, testId, message, icon, actionText, isOpen, url}) => {
+export const MessageLayout: React.FC<PropsType> = ({title, testId, message, icon, actionText, url}) => {
     const size = useMediaQuery();
 
-    const [open, setOpen] = useState(isOpen)
+    const [open, setOpen] = useState(true)
     const navigate = useNavigate()
 
     const onClickHandler = () => {

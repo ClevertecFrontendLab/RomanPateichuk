@@ -1,29 +1,28 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {getStorageItem} from "@utils/index.ts";
 
-const tokenStorage = getStorageItem(localStorage, "token");
-const tokenSession = getStorageItem(sessionStorage, "token");
-
-const token = tokenStorage || tokenSession;
-
 export const authApi = createApi({
     reducerPath: 'authApi',
     baseQuery: fetchBaseQuery(
         {
-        baseUrl: 'https://marathon-api.clevertec.ru/',
-        credentials: "include",
-            headers: {
-                Authorization: `Bearer ${token}`,
+            baseUrl: 'https://marathon-api.clevertec.ru/',
+            prepareHeaders: (headers) => {
+                const tokenStorage = getStorageItem(localStorage, "token")
+                const tokenSession = getStorageItem(sessionStorage, "token")
+
+                const token = tokenStorage || tokenSession
+
+                if (token) {
+                    headers.set('Authorization', `Bearer ${token}`)
+                }
+
+                return headers;
             },
-    }),
+        }),
 
     endpoints: (build) => ({
         authMe: build.query({
-            query: (me)=> `/user/${me}`,
-        }),
-
-        authWithGoogle: build.query({
-            query: () => "/auth/google",
+            query: (me) => `/user/${me}`,
         }),
 
         login: build.mutation({
@@ -69,4 +68,10 @@ export const authApi = createApi({
     })
 })
 
-export const {useChangePasswordMutation, useConfirmEmailMutation, useCheckEmailMutation, useAuthMeQuery, useAuthWithGoogleQuery, useLoginMutation, useRegistrationMutation } = authApi
+export const {
+    useChangePasswordMutation,
+    useCheckEmailMutation,
+    useConfirmEmailMutation,
+    useLoginMutation,
+    useRegistrationMutation
+} = authApi

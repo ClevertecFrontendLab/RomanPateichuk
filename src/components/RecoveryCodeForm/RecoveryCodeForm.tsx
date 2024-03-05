@@ -22,6 +22,7 @@ export const RecoveryCodeForm: React.FC = ()=>{
     const email = getStorageItem(localStorage,"email")
 
     const onCompleteHandler = async (value: string)=>{
+        setVerificationCode(value);
         await confirmEmail({
             "email": email,
             "code": value
@@ -60,7 +61,6 @@ export const RecoveryCodeForm: React.FC = ()=>{
                         <VerificationInput
                             classNames={{
                                 container: styles.container,
-                                character: styles.character + ' error',
                                 character: `${styles.character} + ' '+ ${error && styles.error}`,
                                 characterInactive: styles.inactive,
                                 characterSelected: styles.selected,

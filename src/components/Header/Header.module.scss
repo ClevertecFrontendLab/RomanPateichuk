@@ -5,17 +5,7 @@
     padding: 1rem 1.5rem;
     height: auto;
     @media (max-width: 360px) {
-        padding: 1rem 1.5rem 1.5rem;
-    }
-    .breadcrumb {
-        padding-bottom: .875rem;
-        @media (max-width: 360px) {
-            padding-bottom: 0;
-        }
-        .item {
-            @include Font(.875rem);
-            margin: 0 0 .875rem;
-        }
+        padding: 0 1.5rem 1.5rem;
     }
 
     .header_block {

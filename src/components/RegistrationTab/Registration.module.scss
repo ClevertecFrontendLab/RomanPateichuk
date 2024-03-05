@@ -1,0 +1,31 @@
+@import '../../styles/mixins';
+
+.signup {
+    :global {
+        .ant-form-item {
+            &:nth-child(1) {
+                margin-bottom: 2rem;
+            }
+
+            &:nth-child(2) {
+                margin-bottom: 3rem;
+            }
+
+            &:nth-child(3) {
+                margin-bottom: 3.875rem;
+                @media(max-width: 575px) {
+                    margin-bottom: 3.3rem;
+                }
+            }
+        }
+
+        .ant-form-item-explain {
+            @include Font($size: .75rem, $color: var(--gray-7));
+        }
+
+        .ant-tabs {
+            background-color: red;
+        }
+
+    }
+}
