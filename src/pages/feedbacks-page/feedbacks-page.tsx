@@ -1,17 +1,19 @@
-import React, {useCallback, useState} from 'react'
-import styles from './feedbacks-page.module.scss'
-import {useGetFeedBackQuery} from "@redux/api/feedBackApi.ts";
-import {Avatar, Button, Modal, Rate, Result, Space, Spin} from "antd";
-import {StarFilled, StarOutlined, UserOutlined} from "@ant-design/icons";
-import {EComponentStatus} from "@types/components.ts";
-import {useNavigate} from "react-router-dom";
 import Loader from "../../assets/loader.json";
-import {CreateFeedBackForm} from "@components/CreateFeedBackForm/CreateFeedBackForm.tsx";
-import {Typography} from 'antd';
+import React, {useState} from 'react'
 import classNames from 'classnames/bind';
-import {SuccessModal} from "@pages/feedbacks-page/SuccessModal.tsx";
+import styles from './feedbacks-page.module.scss'
+import {Avatar, Button, Rate, Result, Spin} from "antd";
+import {CreateFeedBackForm} from "@components/CreateFeedBackForm/CreateFeedBackForm.tsx";
+import {EComponentStatus} from "@types/components.ts";
 import {ErrorModal} from "@pages/feedbacks-page/ErrorModal.tsx";
-import useMediaQuery from "use-media-antd-query";
+import {StarFilled, StarOutlined, UserOutlined} from "@ant-design/icons";
+import {SuccessModal} from "@pages/feedbacks-page/SuccessModal.tsx";
+import {Typography} from 'antd';
+import {setShowFeedBacksModal} from "@redux/feedbacksSlice.ts";
+import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
+import {useDispatch} from "react-redux";
+import {useGetFeedBackQuery} from "@redux/api/feedBackApi.ts";
+import {useNavigate} from "react-router-dom";
 
 const {Text, Title, Paragraph} = Typography;
 
@@ -25,42 +27,24 @@ export interface FeedBackType {
 }
 
 export const FeedbacksPage: React.FC = React.memo(() => {
-    const [showFeedBackForm, setShowFeedBackForm] = useState(false)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [buttonText, setButtonText] = useState('Развернуть все отзывы')
     const {data = [], isLoading, isError, error} = useGetFeedBackQuery('')
-    const [status, setStatus] = useState('')
-    const [isOpen, setIsOpen] = useState(false)
-
-    const navigate = useNavigate()
-    const size = useMediaQuery();
-    const calculateModalHeight = useCallback(() => {
-        return (size === 'xs') ? '281px' : '345px'
-    }, [size])
+    const [isOpenAllFeedBacks, setIsOpenAllFeedBacks] = useState(false)
     const cx = classNames.bind(styles);
+    const showFeedBackForm = useAppSelector(state=> state.feedbacks.isShowModal)
+    const status = useAppSelector(state=> state.app.status)
 
     const FeedbacksPageClassName = cx({
         wrapper: true,
-        open: isOpen,
+        open: isOpenAllFeedBacks,
         hideButtons: data.length === 0
     })
 
     const onClickResultHandler = () => {
         return navigate('/main')
-
     }
-
-    const createFeedback = () => {
-        setShowFeedBackForm(true)
-    }
-
-    const isOpenCallBack = (value: boolean) => {
-        setShowFeedBackForm(value)
-    }
-
-    const getStatus = (status: string) => {
-        setStatus(status)
-    }
-
 
     if (isError) {
         if (error.status === EComponentStatus.S403) {
@@ -72,23 +56,16 @@ export const FeedbacksPage: React.FC = React.memo(() => {
             return <Result title={'что-то пошло не так'}
                            subTitle={'Произошла ошибка, попробуйте ещё раз.'}
                            status={'500'}
-                           testId={''}
                            extra={<Button type="primary"
                                           onClick={onClickResultHandler}>Назад</Button>}
             />
         }
-
     }
 
 
     const switchShowFeedbacks = () => {
         setButtonText(buttonText === 'Развернуть все отзывы' ? 'Свернуть все отзывы' : 'Развернуть все отзывы')
-        setIsOpen((prev) => !prev)
-    }
-
-    const errorHandler = () => {
-        setStatus('')
-        createFeedback()
+        setIsOpenAllFeedBacks((prev) => !prev)
     }
 
 
@@ -98,76 +75,14 @@ export const FeedbacksPage: React.FC = React.memo(() => {
                 <Spin indicator={Loader} data-test-id="loader"/> :
                 <div className={FeedbacksPageClassName}>
                     {showFeedBackForm &&
-                        <CreateFeedBackForm isOpenCallBack={isOpenCallBack} getStatus={getStatus}/>}
-                    {/* to do */}
-                    {status === 'error' && <Modal open={true}
-                                                  footer={null}
-                                                  closable={false}
-                                                  centered
-                                                  maskStyle={{
-                                                      backgroundColor: 'rgba(121, 156, 213, 0.5)',
-                                                      backdropFilter: 'blur(5px)'
-                                                  }}
-                                                  width={size === 'xs' ? 328 : 539}
-                                                  bodyStyle={{
-                                                      padding: size === 'xs' ? '0 16px' : '0px 85.5px',
-                                                      height: calculateModalHeight(),
-                                                      justifyContent: 'center'
-                                                  }}
-                    >
-                        <Result
-                            title={'Данные не сохранились'}
-                            subTitle={'Что-то пошло не так. Попробуйте еще раз'}
-                            status={'error'}
-                            style={{padding: '0'}}
-
-                        />
-                        <Space
-                            direction={'horizontal'}
-                            style={{marginTop: '24px', width: '100%'}}
-                        >
-                            <Button data-test-id='write-review-not-saved-modal'
-                                    style={{
-                                        height: '40px',
-                                        width: size === 'xs' ? '144px' : '180px'
-                                    }}
-                                    type="primary" onClick={errorHandler}>Написать
-                                отзыв</Button>
-                            <Button
-                                style={{height: '40px', width: size === 'xs' ? '144px' : '180px'}}
-                                onClick={() => {
-                                    setStatus('');
-                                    setShowFeedBackForm(false)
-                                }}>Закрыть</Button>
-                        </Space>
-                    </Modal>}
-
-                    {status === 'success' && <Modal open={true}
-                                                    footer={null}
-                                                    closable={false}
-                                                    centered
-                                                    maskStyle={{
-                                                        backgroundColor: 'rgba(121, 156, 213, 0.5)',
-                                                        backdropFilter: 'blur(5px)'
-                                                    }}
-                                                    width= {size === 'xs' ? 328 : 539}
-                                                    bodyStyle={{padding: size === 'xs' ? '0 16px' : '0px 85.5px',
-                                                        height: calculateModalHeight(),
-                                                        justifyContent: 'center'}}
-                    ><Result title={'Отзыв успешно опубликован'}
-                             status={'success'}
-                             style={{padding: '0'}}
-
-                    /> <Button type="primary"
-                               style={{height: '40px', marginTop: '20px'}}
-                               onClick={() => {
-                                   setStatus('')
-                               }}>Отлично</Button></Modal>}
+                        <CreateFeedBackForm />}
+                    {status === 'error' && <ErrorModal/>}
+                    {status === 'success' && <SuccessModal/>}
 
                     {data.length ? <div className={styles.feedbacksBlock}>
                             {
                                 data.slice(-20).map((feedback: FeedBackType) => {
-                                    let fullName = ['Роман', 'Патейчук']
+                                    let fullName = ['', '']
                                     if (feedback.fullName) {
                                         fullName = feedback.fullName.split(' ')
                                     }
@@ -215,7 +130,7 @@ export const FeedbacksPage: React.FC = React.memo(() => {
                         </div>}
 
                     <Button data-test-id='write-review' className={styles.createFeedbackBtn}
-                            type={'primary'} onClick={createFeedback}>Написать отзыв</Button>
+                            type={'primary'} onClick={()=>{dispatch(setShowFeedBacksModal(true))}}>Написать отзыв</Button>
                     <Button type={'link'} data-test-id='all-reviews-button'
                             className={styles.switchShowFeedbacksBtn}
                             onClick={switchShowFeedbacks}>{buttonText}</Button>

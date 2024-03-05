@@ -1,8 +1,12 @@
 import {Button, Modal, Result, Space} from "antd";
 import React, {useCallback} from "react";
 import useMediaQuery from "use-media-antd-query";
+import {setStatus} from "@redux/appSlice.ts";
+import {setShowFeedBacksModal} from "@redux/feedbacksSlice.ts";
+import {useDispatch} from "react-redux";
 
 export const ErrorModal: React.FC = () => {
+    const dispatch = useDispatch()
     const size = useMediaQuery();
 
     const calculateModalHeight = useCallback(() => {
@@ -11,8 +15,8 @@ export const ErrorModal: React.FC = () => {
 
 
     const errorHandler = () => {
-        //setStatus('')
-       // createFeedback()
+        dispatch(setStatus('idle'))
+        dispatch(setShowFeedBacksModal(true))
     }
 
     return <Modal open={true}
@@ -38,19 +42,22 @@ export const ErrorModal: React.FC = () => {
 
         />
         <Space
-        direction={'horizontal'}
-        style={{marginTop: '24px', width: '100%'}}
+            direction={'horizontal'}
+            style={{marginTop: '24px', width: '100%'}}
         >
             <Button data-test-id='write-review-not-saved-modal'
-                    style={{height: '40px', width: size === 'xs' ? '144px' : '180px'}}
+                    style={{
+                        height: '40px',
+                        width: size === 'xs' ? '144px' : '180px'
+                    }}
                     type="primary" onClick={errorHandler}>Написать
                 отзыв</Button>
             <Button
                 style={{height: '40px', width: size === 'xs' ? '144px' : '180px'}}
                 onClick={() => {
-                //setStatus('');
-                // setShowFeedBackForm(false)
-            }}>Закрыть</Button>
+                    dispatch(setStatus('idle'))
+                    dispatch(setShowFeedBacksModal(false))
+                }}>Закрыть</Button>
         </Space>
     </Modal>
 }

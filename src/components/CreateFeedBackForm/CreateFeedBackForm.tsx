@@ -1,22 +1,21 @@
 import React, {useState} from 'react'
-import {Button, Form, Modal, Rate} from "antd";
-import {Input} from 'antd';
-import {Controller, useForm, useWatch} from "react-hook-form";
-import {useSendFeedBackMutation} from "@redux/api/feedBackApi.ts";
 import styles from './CreateFeedBackForm.module.scss'
+import {Button, Form, Modal, Rate} from "antd";
+import {Controller, useForm, useWatch} from "react-hook-form";
+import {Input} from 'antd';
 import {StarFilled, StarOutlined} from "@ant-design/icons";
+import {setShowFeedBacksModal} from "@redux/feedbacksSlice.ts";
+import {setStatus} from "@redux/appSlice.ts";
+import {useDispatch} from "react-redux";
+import {useSendFeedBackMutation} from "@redux/api/feedBackApi.ts";
 
 
 const {TextArea} = Input;
 
-type CreateFeedBackFormPropsType = {
-    isOpenCallBack: (value: boolean)=> void
-    getStatus: (status: string)=>void
-}
-
-export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props) => {
-    const {isOpenCallBack,  getStatus} = props
+export const CreateFeedBackForm: React.FC = () => {
     const [open, setOpen] = useState(true);
+    const [sendFeedBack] = useSendFeedBackMutation()
+    const dispatch = useDispatch()
     const {control, handleSubmit} = useForm({
         mode: "onChange"
     })
@@ -25,9 +24,6 @@ export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props)
         control,
         name: 'rating',
     });
-
-
-    const [sendFeedBack] = useSendFeedBackMutation()
 
     const handleFormSubmit = async (values: { message: string, rating: string }) => {
 
@@ -38,20 +34,17 @@ export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props)
             .unwrap()
             .then(() => {
                 setOpen(false)
-                isOpenCallBack(false)
-                getStatus('success')
+                dispatch(setShowFeedBacksModal(false))
+                dispatch(setStatus('success'))
             }).catch(() => {
-                getStatus('error')
+                dispatch(setStatus('error'))
             })
     }
 
-
-
     const handleCancel = () => {
         setOpen(false);
-        isOpenCallBack(false)
+        dispatch(setShowFeedBacksModal(false))
     };
-
 
     return (
         <Modal
@@ -98,3 +91,4 @@ export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props)
         </Modal>
     )
 }
+
