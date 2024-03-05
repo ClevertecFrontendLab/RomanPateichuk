@@ -34,7 +34,7 @@ export const LoginPage: React.FC = () => {
         } else {
             return (size === 'xs') ? '564px' : '686px'
         }
-    }, [tab])
+    }, [tab, size])
 
     const calculateTabsMargin = useCallback(() => {
         if (tab === '/auth') {
@@ -42,7 +42,7 @@ export const LoginPage: React.FC = () => {
         } else {
             return (size === 'xs') ? '0 0 1.5rem 0' : '0 0 1.875rem 0'
         }
-    }, [tab])
+    }, [tab, size])
 
 
     return (

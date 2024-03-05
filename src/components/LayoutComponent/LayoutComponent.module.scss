@@ -2,21 +2,9 @@
 
         .breadcrumb {
             background: var(--color-header-bg);
-            //padding: 1rem 0rem 0rem 1.5rem;
             padding: 1rem 1.5rem;
             @include Font($size: 14px);
-
-            //@media (max-width: 360px) {
-            //    padding: 1rem 0rem .3rem 1.5rem;
-            //}
-            //.item {
-            //    @include Font(.875rem);
-            //    margin: 0 0 .875rem;
-            //}
         }
-
-
-
 
 
 

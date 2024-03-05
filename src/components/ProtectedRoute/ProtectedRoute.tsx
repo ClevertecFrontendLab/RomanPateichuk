@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect} from 'react';
+import React, {ReactNode} from 'react';
 import {Navigate} from 'react-router-dom';
 import {getStorageItem} from "@utils/index.ts";
 

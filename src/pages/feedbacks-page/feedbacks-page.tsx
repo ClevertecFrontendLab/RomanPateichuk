@@ -1,8 +1,8 @@
 import Loader from "../../assets/loader.json";
-import React, {useState} from 'react'
+import React, { useState} from 'react'
 import classNames from 'classnames/bind';
 import styles from './feedbacks-page.module.scss'
-import {Avatar, Button, Rate, Result, Spin} from "antd";
+import {Avatar, Button, Rate, Spin} from "antd";
 import {CreateFeedBackForm} from "@components/CreateFeedBackForm/CreateFeedBackForm.tsx";
 import {EComponentStatus} from "@types/components.ts";
 import {ErrorModal} from "@pages/feedbacks-page/ErrorModal.tsx";
@@ -14,6 +14,7 @@ import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
 import {useDispatch} from "react-redux";
 import {useGetFeedBackQuery} from "@redux/api/feedBackApi.ts";
 import {useNavigate} from "react-router-dom";
+import {ErrorStatusModal} from "@components/ErrorStatusModal/ErrorStatusModal.tsx";
 
 const {Text, Title, Paragraph} = Typography;
 
@@ -42,10 +43,6 @@ export const FeedbacksPage: React.FC = React.memo(() => {
         hideButtons: data.length === 0
     })
 
-    const onClickResultHandler = () => {
-        return navigate('/main')
-    }
-
     if (isError) {
         if (error.status === EComponentStatus.S403) {
             sessionStorage.removeItem("token");
@@ -53,12 +50,7 @@ export const FeedbacksPage: React.FC = React.memo(() => {
             return navigate('/auth')
 
         } else {
-            return <Result title={'что-то пошло не так'}
-                           subTitle={'Произошла ошибка, попробуйте ещё раз.'}
-                           status={'500'}
-                           extra={<Button type="primary"
-                                          onClick={onClickResultHandler}>Назад</Button>}
-            />
+            return <ErrorStatusModal/>
         }
     }
 
@@ -81,7 +73,7 @@ export const FeedbacksPage: React.FC = React.memo(() => {
 
                     {data.length ? <div className={styles.feedbacksBlock}>
                             {
-                                data.slice(-20).map((feedback: FeedBackType) => {
+                                data.map((feedback: FeedBackType) => {
                                     let fullName = ['', '']
                                     if (feedback.fullName) {
                                         fullName = feedback.fullName.split(' ')

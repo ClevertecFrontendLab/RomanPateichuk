@@ -83,6 +83,10 @@ export const CreateFeedBackForm: React.FC = () => {
                     <Controller name={'message'}
                                 control={control}
                                 render={({ field}) => <TextArea
+                                    onChange={(value)=>{
+                                        console.log(value)
+                                    }
+                                }
                                     placeholder={'Autosize height based on content lines'}
                                     autoSize={{ minRows: 2}} {...field} />}
                     />
