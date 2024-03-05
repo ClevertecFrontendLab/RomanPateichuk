@@ -17,7 +17,7 @@ type CreateFeedBackFormPropsType = {
 export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props) => {
     const {isOpenCallBack,  getStatus} = props
     const [open, setOpen] = useState(true);
-    const {control, handleSubmit, field, formState: {errors}} = useForm({
+    const {control, handleSubmit} = useForm({
         mode: "onChange"
     })
 
@@ -58,16 +58,22 @@ export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props)
             title="Ваш отзыв"
             centered
             open={open}
-            footer={null}
+            maskStyle={{ backgroundColor: 'rgba(121, 156, 213, 0.5)', backdropFilter: 'blur(5px)' }}
+            footer={[
+                <Button
+                    data-test-id='new-review-submit-button'
+                    type={'primary'}
+                    htmlType="submit"
+                    onClick={handleSubmit(handleFormSubmit)}
+                    disabled={watchedRatingField === 0}
+                >Опубликовать</Button>
+            ]}
             onCancel={handleCancel}
             className={styles.modal}
         >
             <Form className={styles.form} onSubmitCapture={handleSubmit(handleFormSubmit)}>
                 <Form.Item className={styles.rateFormItem}>
                     <Controller name={'rating'}
-                                rules={{
-                                    //required: true,
-                                }}
                                 control={control}
                                 render={({ field}) =>
                                     <Rate className={styles.rate}  {...field} count={5} character={({ index, value }) => {
@@ -88,17 +94,6 @@ export const CreateFeedBackForm: React.FC<CreateFeedBackFormPropsType> = (props)
                                     autoSize={{ minRows: 2}} {...field} />}
                     />
                 </Form.Item>
-
-
-                <Form.Item className={styles.button}>
-                    <Button
-                        data-test-id='new-review-submit-button'
-                        type={'primary'}
-                        htmlType="submit"
-                        // disabled={!watchedRatingField}
-                    >Опубликовать</Button>
-                </Form.Item>
-
             </Form>
         </Modal>
     )

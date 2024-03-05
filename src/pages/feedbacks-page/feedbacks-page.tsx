@@ -129,7 +129,7 @@ export const FeedbacksPage: React.FC = React.memo(() => {
 
                     {data.length ? <div className={styles.feedbacksBlock}>
                             {
-                                data.map((feedback: FeedBackType)  => {
+                                data.slice(-20).map((feedback: FeedBackType)  => {
                                     let fullName = ['Роман', 'Патейчук']
                                        if(feedback.fullName){
                                            fullName =  feedback.fullName.split(' ')
