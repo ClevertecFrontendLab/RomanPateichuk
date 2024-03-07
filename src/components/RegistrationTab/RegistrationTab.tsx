@@ -6,7 +6,7 @@ import {Controller, useForm} from "react-hook-form";
 import {getStorageItem} from "@utils/index.ts";
 import {Button, Form, Input} from "antd";
 import styles from "./Registration.module.scss";
-import Loader from "../../assets/loader.json";
+import {Loader} from "@components/Loader/Loader.tsx";
 import {GooglePlusOutlined} from "@ant-design/icons";
 import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
 

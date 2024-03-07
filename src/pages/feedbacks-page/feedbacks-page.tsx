@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './feedbacks-page.module.scss'
 import {Button, Space} from "antd";
 import {CreateFeedBackForm} from "@components/CreateFeedBackForm/CreateFeedBackForm.tsx";
-import {EComponentStatus} from "@types/components.ts";
+import {EComponentStatus} from '@types/components.ts'
 import {ErrorModal} from "@pages/feedbacks-page/ErrorModal.tsx";
 import {SuccessModal} from "@pages/feedbacks-page/SuccessModal.tsx";
 import {Typography} from 'antd';
@@ -14,7 +14,8 @@ import {useGetFeedBackQuery} from "@redux/api/feedBackApi.ts";
 import {useNavigate} from "react-router-dom";
 import {ErrorStatusModal} from "@components/ErrorStatusModal/ErrorStatusModal.tsx";
 import {Loader} from "@components/Loader/Loader.tsx";
-import { Virtuoso } from 'react-virtuoso'
+//import { Virtuoso } from 'react-virtuoso'
+
 import {
     FeedBackComponent,
     FeedBackSchema
@@ -73,8 +74,8 @@ export const FeedbacksPage: React.FC = React.memo(() => {
                                 //     data = { reversedData.slice(0, displayCount)}
                                 //     itemContent={(index, feedback: FeedBackSchema) => <FeedBackComponent key={index} feedback={feedback}/>}
                                 // />
-
                             reversedData.slice(0, displayCount).map((feedback: FeedBackSchema) => <FeedBackComponent key={feedback.id} feedback={feedback}/>)
+
 
 
                         )

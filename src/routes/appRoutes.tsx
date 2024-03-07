@@ -7,14 +7,14 @@ import {TrainingPage} from "@pages/training-page";
 import {ProgressPage} from "@pages/progress-page";
 import {ProfilePage} from "@pages/profile-page";
 import {ErrorIcon, SuccessIcon, WarningIcon} from "@components/Icon/library";
-import {MessageLayout} from "@components/MessageLayout/MessageLayout";
+import {MessageLayout} from "@components/Layouts/MessageLayout";
 import {ProtectedRoute} from "@components/ProtectedRoute/ProtectedRoute";
-import {LayoutComponent} from "@components/LayoutComponent";
 import {MainPage} from "@pages/main-page";
 import {RecoveryPasswordForm} from "@components/RecoveryPasswordForm/RecoveryPasswordForm.tsx";
 import {RecoveryCodeForm} from "@components/RecoveryCodeForm/RecoveryCodeForm.tsx";
 import {FeedbacksPage} from "@pages/feedbacks-page/feedbacks-page.tsx";
 import {useEffect} from "react";
+import {MainLayout} from "@components/Layouts/MainLayout";
 
 export const routesConfig = [
     {
@@ -46,7 +46,7 @@ export const routesConfig = [
 
     {
         path: 'result',
-        element: <LayoutComponent/>,
+        element: <MainLayout/>,
         children: [
             {
                 path: 'error-login',
@@ -139,7 +139,7 @@ export const routesConfig = [
     },
     {
         path: '/',
-        element: <ProtectedRoute><LayoutComponent/></ProtectedRoute>,
+        element: <ProtectedRoute><MainLayout/></ProtectedRoute>,
         children: [
             {index: true, element: <Navigate to="/main" replace/>},
             {path: 'main', element: <MainPage/>},

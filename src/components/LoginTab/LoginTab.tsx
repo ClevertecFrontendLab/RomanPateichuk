@@ -15,8 +15,8 @@ import {useNavigate} from "react-router-dom";
 
 
 export const LoginTab: React.FC = () => {
-    const [login, {isLoading}] = useLoginMutation();
-    const [checkEmail, checkEmailResult, isFetching] = useCheckEmailMutation()
+    const [login, {isLoading: isLoadingLogin}] = useLoginMutation();
+    const [checkEmail, {isLoading: isLoadingCheckEmail}] = useCheckEmailMutation()
 
 
     const prevLocation = useAppSelector(state => state.router.previousLocations[1]?.location.pathname)
@@ -48,14 +48,14 @@ export const LoginTab: React.FC = () => {
     }, [checkEmail, navigate])
 
 
-    useEffect(() => {
+    useEffect( () => {
         if (prevLocation === '/result/error-check-email') {
-            handleForgetPassword(getStorageItem(localStorage, "email"))
+             handleForgetPassword(getStorageItem(localStorage, "email"))
         }
     }, [handleForgetPassword, prevLocation]);
 
 
-    const handleFormSubmit = async (values) => {
+    const handleFormSubmit = async (values: {email: string, password: string, rememberMe: boolean}) => {
         await login(values)
             .unwrap()
             .then((response) => {
@@ -83,10 +83,9 @@ export const LoginTab: React.FC = () => {
 
             <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
                   className={styles.login}>
-                {(isLoading || isFetching) && <Loader/>}
+                {(isLoadingLogin || isLoadingCheckEmail) && <Loader/>}
 
                 <Form.Item validateStatus={errors.email && 'error'}>
-                    {checkEmailResult.isLoading && <Loader/>}
                     <Controller name={'email'}
                                 rules={{
                                     required: true,
@@ -125,8 +124,8 @@ export const LoginTab: React.FC = () => {
                                 render={() => <Button
                                     data-test-id='login-forgot-button'
                                     disabled={!!errors.email}
-                                    onClick={() => {
-                                        handleForgetPassword(getValues('email'), setError)
+                                    onClick={async () => {
+                                        await handleForgetPassword(getValues('email'), setError)
                                     }} type="link">Забыли
                                     пароль?</Button>}
                     />
