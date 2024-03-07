@@ -3,9 +3,9 @@ import {
     useCheckEmailMutation,
     useLoginMutation,
 } from "@redux/api/authApi.ts";
-import Loader from "../../assets/loader.json";
+import {Loader} from "@components/Loader/Loader.tsx";
 import styles from "./LoginTab.module.scss";
-import {Button, Checkbox, Form, Input, Space, Spin} from "antd";
+import {Button, Checkbox, Form, Input, Space} from "antd";
 import {Controller, useForm} from "react-hook-form";
 import {EComponentStatus} from "@types/components.ts";
 import {GooglePlusOutlined} from "@ant-design/icons";
@@ -83,10 +83,10 @@ export const LoginTab: React.FC = () => {
 
             <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="login"
                   className={styles.login}>
-                {(isLoading || isFetching) && <Spin indicator={Loader} data-test-id="loader"/>}
+                {(isLoading || isFetching) && <Loader/>}
 
                 <Form.Item validateStatus={errors.email && 'error'}>
-                    {checkEmailResult.isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+                    {checkEmailResult.isLoading && <Loader/>}
                     <Controller name={'email'}
                                 rules={{
                                     required: true,

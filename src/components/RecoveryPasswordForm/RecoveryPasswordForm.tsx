@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react'
-import {Button, Form, Input, Layout, Modal, Spin, Typography} from "antd";
+import {Button, Form, Input, Layout, Modal, Typography} from "antd";
 import {useChangePasswordMutation} from "@redux/api/authApi.ts";
 import styles from "./Recovery.Password.module.scss";
 import {Controller, useForm} from "react-hook-form";
@@ -56,7 +56,7 @@ export const RecoveryPasswordForm: React.FC = () => {
                 bodyStyle={{height: size === 'xs' ? '457px' : '428px'}}
                 width={size === 'xs' ? 328 : 539}
             >
-                {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+                {isLoading && <Loader/>}
                 <Title level={3} className={styles.title}>Восстановление аккауанта</Title>
                 <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'}
                       name="signUp"

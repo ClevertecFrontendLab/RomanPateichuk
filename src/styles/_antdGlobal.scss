@@ -72,14 +72,6 @@ span.ant-input-affix-wrapper-status-error:not(.ant-input-affix-wrapper-disabled)
     }
 }
 
-div.ant-spin-spinning {
-    position: absolute;
-    z-index: 1000;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 div.ant-result-title{
     font-weight: 500;
     line-height: normal;
