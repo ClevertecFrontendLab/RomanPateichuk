@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {EComponentStatus} from "@types/components.ts";
 import {Controller, useForm} from "react-hook-form";
 import {getStorageItem} from "@utils/index.ts";
-import {Button, Form, Input, Spin} from "antd";
+import {Button, Form, Input} from "antd";
 import styles from "./Registration.module.scss";
 import Loader from "../../assets/loader.json";
 import {GooglePlusOutlined} from "@ant-design/icons";
@@ -52,7 +52,7 @@ export const RegistrationTab: React.FC = () => {
     return (
         <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'} name="signUp"
               className={styles.signup}>
-            {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+            {isLoading && <Loader/>}
             <Form.Item validateStatus={errors.email && 'error'}>
                 <Controller name={'email'}
                             rules={{

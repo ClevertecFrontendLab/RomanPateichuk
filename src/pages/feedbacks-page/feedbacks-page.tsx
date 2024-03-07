@@ -1,8 +1,7 @@
-import Loader from "../../assets/loader.json";
 import React, { useState} from 'react'
 import classNames from 'classnames/bind';
 import styles from './feedbacks-page.module.scss'
-import {Button, Space, Spin} from "antd";
+import {Button, Space} from "antd";
 import {CreateFeedBackForm} from "@components/CreateFeedBackForm/CreateFeedBackForm.tsx";
 import {EComponentStatus} from "@types/components.ts";
 import {ErrorModal} from "@pages/feedbacks-page/ErrorModal.tsx";
@@ -14,6 +13,7 @@ import {useDispatch} from "react-redux";
 import {useGetFeedBackQuery} from "@redux/api/feedBackApi.ts";
 import {useNavigate} from "react-router-dom";
 import {ErrorStatusModal} from "@components/ErrorStatusModal/ErrorStatusModal.tsx";
+import {Loader} from "@components/Loader/Loader.tsx";
 import { Virtuoso } from 'react-virtuoso'
 import {
     FeedBackComponent,
@@ -57,7 +57,7 @@ export const FeedbacksPage: React.FC = React.memo(() => {
     return (
         <>
             {isLoading ?
-                <Spin indicator={Loader} data-test-id="loader"/> :
+                <Loader/> :
                 <div className={FeedbacksPageClassName}>
                     {showFeedBackForm &&
                         <CreateFeedBackForm />}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Layout, Modal, Result, Spin, Typography} from "antd";
+import {Layout, Modal, Result, Typography} from "antd";
 import styles from "./RecoveryCodeForm.module.scss";
 import useMediaQuery from "use-media-antd-query";
 import {useNavigate} from "react-router-dom";
@@ -37,7 +37,7 @@ export const RecoveryCodeForm: React.FC = ()=>{
     }
 
 
-    const handleVerificationChange = (value) => {
+    const handleVerificationChange = (value: string) => {
         setVerificationCode(value);
     };
 
@@ -51,7 +51,7 @@ export const RecoveryCodeForm: React.FC = ()=>{
                 bodyStyle={{height: size === 'xs' ? '457px' : '428px'}}
                 width={size === 'xs' ? 328 : 539}
             >
-                {isLoading && <Spin indicator={Loader} data-test-id="loader"/>}
+                {isLoading && <Loader/>}
                 <div className={styles.body}>
                 <Result
                     title={<Title className={styles.title} level={3}>Введите код для восстановления аккауанта</Title>}
@@ -63,10 +63,8 @@ export const RecoveryCodeForm: React.FC = ()=>{
                                 container: styles.container,
                                 character: `${styles.character} + ' '+ ${error && styles.error}`,
                                 characterInactive: styles.inactive,
-                                characterSelected: styles.selected,
-                                characterFilled: styles.filled,
                             }}
-                            onComplete={(value)=>{onCompleteHandler(value)}}
+                            onComplete={async(value)=>{await onCompleteHandler(value)}}
                             value={verificationCode}
                             onChange={handleVerificationChange}
                         />
