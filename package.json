@@ -36,6 +36,7 @@
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.21.1",
     "react-verification-input": "^4.1.0",
+    "react-virtuoso": "^4.7.1",
     "redux-first-history": "^5.2.0",
     "sass": "^1.70.0",
     "use-media-antd-query": "^1.1.0"
