@@ -12,6 +12,7 @@ import {GooglePlusOutlined} from "@ant-design/icons";
 import {getStorageItem} from "@utils/index.ts";
 import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
 import {useNavigate} from "react-router-dom";
+import {prevLocationSelector} from "@redux/selectors.ts";
 
 
 export const LoginTab: React.FC = () => {
@@ -19,7 +20,7 @@ export const LoginTab: React.FC = () => {
     const [checkEmail, {isLoading: isLoadingCheckEmail}] = useCheckEmailMutation()
 
 
-    const prevLocation = useAppSelector(state => state.router.previousLocations[1]?.location.pathname)
+    const prevLocation = useAppSelector(state => prevLocationSelector(state))
     const navigate = useNavigate()
 
     const handleForgetPassword = useCallback(async (email: string, setError: () => void) => {

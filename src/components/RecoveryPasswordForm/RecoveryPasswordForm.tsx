@@ -8,15 +8,22 @@ import {Loader} from "@components/Loader/Loader.tsx";
 import useMediaQuery from "use-media-antd-query";
 import {getStorageItem} from "@utils/index.ts";
 import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
+import {prevLocationSelector} from "@redux/selectors.ts";
+
 const {Title} = Typography;
+
+interface IFormData {
+    password: string,
+    confirmPassword: string
+}
 
 export const RecoveryPasswordForm: React.FC = () => {
     const [changePassword, {isLoading}] = useChangePasswordMutation()
     const navigate = useNavigate()
 
-    const prevLocation = useAppSelector(state => state.router.previousLocations[1]?.location.pathname)
+    const prevLocation = useAppSelector(state => prevLocationSelector(state))
 
-    const handleFormSubmit = useCallback(async (values) => {
+    const handleFormSubmit = useCallback(async (values: IFormData) => {
         localStorage.setItem('changePassword', JSON.stringify({
             password: values.password,
             confirmPassword: values.password
@@ -33,7 +40,7 @@ export const RecoveryPasswordForm: React.FC = () => {
             })
     }, [changePassword, navigate])
 
-    const {control, getValues, handleSubmit, formState: {errors}} = useForm({
+    const {control, getValues, handleSubmit, formState: {errors}} = useForm<IFormData>({
         mode: "onChange"
     })
 
@@ -57,10 +64,10 @@ export const RecoveryPasswordForm: React.FC = () => {
                 width={size === 'xs' ? 328 : 539}
             >
                 {isLoading && <Loader/>}
-                <Title level={3} className={styles.title}>Восстановление аккауанта</Title>
+                <Title level={3}>Восстановление аккауанта</Title>
                 <Form onSubmitCapture={handleSubmit(handleFormSubmit)} layout={'vertical'}
                       name="signUp"
-                      className={styles.signup}>
+                >
 
                     <Form.Item validateStatus={errors.password && 'error'}
                                help={'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
@@ -78,9 +85,9 @@ export const RecoveryPasswordForm: React.FC = () => {
 
                     </Form.Item>
 
-                    <Form.Item validateStatus={errors.password2 && 'error'}
-                               help={errors.password2 && errors.password2?.message?.toString()}>
-                        <Controller name={'password2'} rules={
+                    <Form.Item validateStatus={errors.confirmPassword && 'error'}
+                               help={errors.confirmPassword && errors.confirmPassword?.message?.toString()}>
+                        <Controller name={'confirmPassword'} rules={
                             {
                                 required: true,
                                 validate: (value: string) => {

@@ -55,23 +55,6 @@
             margin-left: 1rem;
         }
 
-        .rate {
-            display: inline-block;
-            line-height: 0;
-            :global{
-                .ant-rate-star:not(:last-child){
-                    margin-right: .375rem;
-                }
-            }
-            .starIcon{
-                color: #faad14;
-                svg{
-                    width: .875rem;
-                    height: .8125rem;
-                }
-            }
-        }
-
         .message {
             display: block;
             @include Font($size: .875rem, $color: var(--color-text-minor));

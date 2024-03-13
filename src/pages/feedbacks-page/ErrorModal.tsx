@@ -1,45 +1,39 @@
-import {Button, Modal, Result, Space} from "antd";
-import React, {useCallback} from "react";
-import useMediaQuery from "use-media-antd-query";
-import {setStatus} from "@redux/appSlice.ts";
-import {setShowFeedBacksModal} from "@redux/feedbacksSlice.ts";
-import {useDispatch} from "react-redux";
+import {Button, Result, Space} from "antd"
+import React, {useCallback} from "react"
+import {setStatus} from "@redux/appSlice.ts"
+import {setShowFeedBacksModal} from "@redux/feedbacksSlice.ts"
+import {useDispatch} from "react-redux"
+import {Modal} from "@components/Modal"
+import useMediaQuery from "use-media-antd-query"
 
 export const ErrorModal: React.FC = () => {
     const dispatch = useDispatch()
-    const size = useMediaQuery();
-
-    const calculateModalHeight = useCallback(() => {
-        return (size === 'xs') ? '281px' : '345px'
-    }, [size])
-
 
     const errorHandler = () => {
         dispatch(setStatus('idle'))
         dispatch(setShowFeedBacksModal(true))
     }
 
-    return <Modal open={true}
-                  footer={null}
-                  closable={false}
-                  centered
-                  maskStyle={{
-                      backgroundColor: 'rgba(121, 156, 213, 0.5)',
-                      backdropFilter: 'blur(5px)'
-                  }}
-                  width={size === 'xs' ? 328 : 539}
-                  bodyStyle={{
-                      padding: size === 'xs' ? '0 16px' : '0px 85.5px',
-                      height: calculateModalHeight(),
-                      justifyContent: 'center'
-                  }}
+    const size = useMediaQuery()
+
+    const calculateModalHeight = useCallback(() => {
+        return (size === 'xs') ? '281px' : '345px'
+    }, [size])
+
+    const calculateModalPadding = useCallback(() => {
+        return (size === 'xs') ? '1.5rem 1rem' : '0px 85.5px'
+    }, [size])
+
+    return <Modal
+        height={calculateModalHeight()}
+        padding={calculateModalPadding()}
+        footer={null}
     >
         <Result
             title={'Данные не сохранились'}
             subTitle={'Что-то пошло не так. Попробуйте еще раз'}
             status={'error'}
             style={{padding: '0'}}
-
         />
         <Space
             direction={'horizontal'}

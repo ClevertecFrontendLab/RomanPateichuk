@@ -9,10 +9,11 @@ import styles from "./Registration.module.scss";
 import {Loader} from "@components/Loader/Loader.tsx";
 import {GooglePlusOutlined} from "@ant-design/icons";
 import {useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
+import {prevLocationSelector} from "@redux/selectors.ts";
 
 export const RegistrationTab: React.FC = () => {
     const [registration, {isLoading}] = useRegistrationMutation();
-    const prevLocation = useAppSelector(state => state.router.previousLocations[1]?.location.pathname)
+    const prevLocation = useAppSelector(state => prevLocationSelector(state))
 
 
     const navigate = useNavigate()

@@ -1,7 +1,8 @@
 import React from "react";
-import {Avatar, Rate, Typography} from "antd";
-import {StarFilled, StarOutlined, UserOutlined} from "@ant-design/icons";
-import styles from './FeedBackComponent.module.scss'
+import {Avatar, Typography} from "antd";
+import {UserOutlined} from "@ant-design/icons";
+import styles from './FeedBack.module.scss'
+import {CustomRate} from "@components/Rate";
 const {Text, Paragraph} = Typography;
 
 export interface FeedBackSchema{
@@ -14,13 +15,11 @@ export interface FeedBackSchema{
 
 }
 
-
 interface FeedBackComponentProps {
     feedback: FeedBackSchema,
-
 }
 
-export const FeedBackComponent: React.FC<FeedBackComponentProps> = (props)=>{
+export const FeedBack: React.FC<FeedBackComponentProps> = (props)=>{
     const {feedback} = props
 
     let fullName = ['', '']
@@ -42,17 +41,10 @@ export const FeedBackComponent: React.FC<FeedBackComponentProps> = (props)=>{
                 </Paragraph>
             </div>
             <div className={styles.messageBlock}>
-                <Rate className={styles.rate} count={5} disabled
-                      value={feedback.rating}
-                      character={({index, value}) => {
-                          if (index + 1 <= value) {
-                              return <StarFilled
-                                  className={styles.starIcon}/>;
-                          } else {
-                              return <StarOutlined
-                                  className={styles.starIcon}/>;
-                          }
-                      }}
+                <CustomRate
+                    value={feedback.rating}
+                    disabled={true}
+                    size={'1rem'}
                 />
                 <Text className={styles.date}>{String(feedback.createdAt.match(/\d{4}-\d{2}-\d{2}/)).split('-').reverse().join('.')}</Text>
                 <Text className={styles.message}>{feedback.message}</Text>

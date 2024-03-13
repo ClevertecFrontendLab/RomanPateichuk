@@ -1,0 +1,9 @@
+.rate {
+    display: inline-block;
+    line-height: 0;
+    :global{
+        .ant-rate-star:not(:last-child){
+           margin-right: .25rem;
+        }
+    }
+}

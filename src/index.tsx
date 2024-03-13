@@ -5,6 +5,7 @@ import {store, history} from '@redux/configure-store'
 import {HistoryRouter} from "redux-first-history/rr6"
 import './index.scss'
 import {AppRoutes} from "./routes/appRoutes.tsx"
+import {Modal} from "@components/Modal";
 
 
 const domNode = document.getElementById('root') as HTMLDivElement
@@ -15,7 +16,7 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <HistoryRouter history={history}>
-                    <AppRoutes></AppRoutes>
+                    <AppRoutes/>
             </HistoryRouter>
         </Provider>
     </React.StrictMode>

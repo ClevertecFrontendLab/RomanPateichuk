@@ -17,20 +17,21 @@ import {Loader} from "@components/Loader/Loader.tsx";
 //import { Virtuoso } from 'react-virtuoso'
 
 import {
-    FeedBackComponent,
+    FeedBack,
     FeedBackSchema
-} from "@components/FeedBackComponent/FeedBackComponent.tsx";
+} from "@components/FeedBack";
+import {AppStatusSelector, isShowModalSelector} from "@redux/selectors.ts";
 const {Text, Title} = Typography;
 
 
 export const FeedbacksPage: React.FC = React.memo(() => {
     const dispatch = useDispatch()
+    const showFeedBackFrom = useAppSelector(state => isShowModalSelector(state))
     const navigate = useNavigate()
     const {data = [], isLoading,  isError, error} = useGetFeedBackQuery('')
     const reversedData =[...data].reverse()
     const cx = classNames.bind(styles);
-    const showFeedBackForm = useAppSelector(state=> state.feedbacks.isShowModal)
-    const status = useAppSelector(state=> state.app.status)
+    const status = useAppSelector(state=> AppStatusSelector(state))
     const [isExpanded, setIsExpanded] = useState<boolean>()
     const FeedbacksPageClassName = cx({
         wrapper: true,
@@ -60,8 +61,7 @@ export const FeedbacksPage: React.FC = React.memo(() => {
             {isLoading ?
                 <Loader/> :
                 <div className={FeedbacksPageClassName}>
-                    {showFeedBackForm &&
-                        <CreateFeedBackForm />}
+                    {showFeedBackFrom && <CreateFeedBackForm />}
                     {status === 'error' && <ErrorModal/>}
                     {status === 'success' && <SuccessModal/>}
 
@@ -72,11 +72,9 @@ export const FeedbacksPage: React.FC = React.memo(() => {
                                 //     style={{height: '572px'}}
                                 //     className={styles.feedbacksBlock}
                                 //     data = { reversedData.slice(0, displayCount)}
-                                //     itemContent={(index, feedback: FeedBackSchema) => <FeedBackComponent key={index} feedback={feedback}/>}
+                                //     itemContent={(index, feedback: FeedBackSchema) => <FeedBack key={index} feedback={feedback}/>}
                                 // />
-                            reversedData.slice(0, displayCount).map((feedback: FeedBackSchema) => <FeedBackComponent key={feedback.id} feedback={feedback}/>)
-
-
+                            reversedData.slice(0, displayCount).map((feedback: FeedBackSchema) => <FeedBack key={feedback.id} feedback={feedback}/>)
 
                         )
                         : (

@@ -1,37 +1,32 @@
-import {Button, Modal, Result} from "antd";
+import {Button, Result} from "antd";
 import React, {useCallback} from "react";
-import useMediaQuery from "use-media-antd-query";
 import {setStatus} from "@redux/appSlice.ts";
 import {useDispatch} from "react-redux";
+import {Modal} from "@components/Modal";
+import useMediaQuery from "use-media-antd-query";
 
 export const SuccessModal: React.FC = () => {
     const dispatch = useDispatch()
-    const size = useMediaQuery();
+
+    const size = useMediaQuery()
+
+    const calculateModalPadding = useCallback(() => {
+        return (size === 'xs') ? '1.5rem 1rem' : '0px 85.5px'
+    }, [size])
 
     const calculateModalHeight = useCallback(() => {
         return (size === 'xs') ? '294px' : '327px'
     }, [size])
 
-    return <Modal open={true}
-                  footer={null}
-                  closable={false}
-                  centered
-                  maskStyle={{
-                      backgroundColor: 'rgba(121, 156, 213, 0.5)',
-                      backdropFilter: 'blur(5px)'
-                  }}
-                  width= {size === 'xs' ? 328 : 539}
-                  bodyStyle={{padding: size === 'xs' ? '0 16px' : '0px 85.5px',
-                      height: calculateModalHeight(),
-                      justifyContent: 'center'}}
-    ><Result title={'Отзыв успешно опубликован'}
-             status={'success'}
-             style={{padding: '0'}}
+    return <Modal height={calculateModalHeight()} padding={calculateModalPadding()} footer={null}>
+        <Result title={'Отзыв успешно опубликован'}
+                status={'success'}
+                style={{padding: '0'}}
 
-    /> <Button type="primary"
-               style={{height: '40px', marginTop: '20px'}}
-               onClick={() => {
-                   dispatch(setStatus('idle'))
-               }}>Отлично</Button></Modal>
+        /> <Button type="primary"
+                   style={{height: '40px', marginTop: '20px'}}
+                   onClick={() => {
+                       dispatch(setStatus('idle'))
+                   }}>Отлично</Button></Modal>
 }
 
