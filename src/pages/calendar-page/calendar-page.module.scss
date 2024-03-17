@@ -1,9 +1,35 @@
-.wrapper{
+
+.createTrainingModal {
+    border-radius: 2px;
+    width: 264px !important;
+    height: 200px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    background: #fff;
+    :global {
+        .ant-modal-close-x {
+            //width: unset;
+            //height: unset;
+        }
+
+        .ant-modal-close {
+            display: inline-block;
+            position: static;
+        }
+
+        .ant-modal-header {
+            display: inline-block;
+        }
+    }
+}
+
+
+.wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1 1 auto;
-    p{
+
+    p {
         font: {
             size: 1.5rem;
             weight: bold;
@@ -11,3 +37,5 @@
 
     }
 }
+
+
