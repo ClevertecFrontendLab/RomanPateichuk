@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appReducer from './appSlice'
 import feedbacksReducer from './feedbacksSlice'
+import calendarReducer from './calendarSlice'
 import { combineReducers } from "redux";
 import { createBrowserHistory } from "history";
 import { createReduxHistoryContext } from "redux-first-history";
@@ -26,6 +27,7 @@ export const store = configureStore({
         app: appReducer,
         router: routerReducer,
         feedbacks: feedbacksReducer,
+        calendar: calendarReducer,
 
     }),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([routerMiddleware, authApi.middleware, feedBackApi.middleware, trainingApi.middleware ]),

@@ -5,3 +5,13 @@ export const isShowModalSelector = (state: RootState) => state.feedbacks.isShowM
 export const prevLocationSelector = (state: RootState) => state.router.previousLocations ? state.router.previousLocations[1]?.location.pathname : ''
 
 export const AppStatusSelector = (state: RootState) => state.app.status
+
+export const trainingListSelector = (state: RootState) => state.calendar.trainingsList
+
+export const trainingPersonalListSelector = (state: RootState)=> state.calendar.personalTrainingsList
+
+export const exercisesListSelector = (state: RootState)=> state.calendar.exercisesList
+
+export const isOpenDrawerSelector = (state: RootState)=> state.calendar.isOpenDrawer
+
+export const selectedTrainingSelector = (state: RootState)=>state.calendar.selectedTraining
