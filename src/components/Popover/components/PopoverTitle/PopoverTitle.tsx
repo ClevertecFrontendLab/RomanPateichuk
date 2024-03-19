@@ -1,10 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Select, Space, Typography} from "antd";
 import {ArrowLeftOutlined, CloseOutlined} from "@ant-design/icons";
 import {Moment} from "moment";
 import {UserTrainingsType} from "@redux/api/trainingApi.ts";
-import {setExercisesList, setSelectedTraining} from "@redux/calendarSlice.ts";
-import {selectedTrainingSelector, trainingListSelector} from "@redux/selectors.ts";
+import {
+    setCreatedExercisesList, setCurrentTraining,
+    setExercisesList,
+    setSelectedTraining
+} from "@redux/calendarSlice.ts";
+import {
+    editTrainingName, editTrainingNameSelector,
+    selectedTrainingSelector,
+    trainingListSelector,
+    trainingPersonalListSelector
+} from "@redux/selectors.ts";
 import {useAppDispatch, useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
 import {AppDispatch} from "@redux/configure-store.ts";
 const {Text} = Typography;
@@ -16,22 +25,31 @@ interface PopoverTitlePropsType {
     setOpenPopoverCallBack: ()=>void
 }
 
-export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, date, dailyTrainingList, setOpenPopoverCallBack})=> {
+export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, date, dailyTrainingList, setOpenPopoverCallBack })=> {
     const dispatch: AppDispatch = useAppDispatch()
 
     const trainingList = useAppSelector(trainingListSelector)
+    const editTrainingName = useAppSelector(editTrainingNameSelector)
 
-    const options = trainingList.map(item => ({value: item.name, label: item.name}))
+    const plannedTrainingNames = dailyTrainingList.map(training => training.name);
+    const availableTrainingsFiltered = trainingList.filter(training => !plannedTrainingNames.includes(training.name));
+    const options = availableTrainingsFiltered.map(item => ({value: item.name, label: item.name}))
 
     const handleChangeSelect = (value: string) => {
         dispatch(setSelectedTraining(value))
-        const findExercises = dailyTrainingList.find(el => el.name === value)
-        if(typeof findExercises === 'undefined'){
+        const currentTraining = dailyTrainingList.find(el => el.name === value)
+
+        if(typeof currentTraining === 'undefined'){
             dispatch(setExercisesList([]))
         }
 
-        findExercises && dispatch(setExercisesList(findExercises.exercises))
+        currentTraining && dispatch(setExercisesList(currentTraining.exercises))
+        currentTraining && dispatch(setCurrentTraining(currentTraining))
     }
+
+    useEffect(() => {
+        handleChangeSelect(editTrainingName)
+    }, [editTrainingName]);
 
     return <Space
         style={{
@@ -48,6 +66,7 @@ export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, da
                     placeholder="Выбор типа тренировки"
                     options={options}
                     onChange={handleChangeSelect}
+                    defaultValue={editTrainingName || null}
                 ></Select>
                 :
                 <Text strong>{`Тренировки на ${date.format('DD.MM.YYYY')}`}</Text>
@@ -63,7 +82,10 @@ export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, da
         <Button
             type='link'
             icon={createTraining ? <ArrowLeftOutlined />: <CloseOutlined/>}
-            onClick={() => setOpenPopoverCallBack()}
+            onClick={() => {
+                setOpenPopoverCallBack()
+                dispatch(setCreatedExercisesList([]))
+            }}
         />
 
     </Space>

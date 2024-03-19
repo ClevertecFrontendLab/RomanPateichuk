@@ -1,21 +1,27 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {Exercise, TrainingsListType, UserTrainingsType} from "@redux/api/trainingApi.ts";
+import {Exercise, Training, TrainingsListType, UserTrainingsType} from "@redux/api/trainingApi.ts";
 
 interface appStateType {
     trainingsList: TrainingsListType
     exercisesList: Exercise[]
+    createdExercisesList: Exercise[]
     personalTrainingsList: UserTrainingsType
     isOpenDrawer: boolean
     selectedTraining: string
+    currentTraining: Training
+    editTrainingName: string
 }
 
 
 const initialState: appStateType = {
     trainingsList: [],
     exercisesList: [],
+    createdExercisesList: [],
     personalTrainingsList: [],
     isOpenDrawer: false,
     selectedTraining: '',
+    currentTraining: {},
+    editTrainingName: ''
 }
 
 
@@ -39,8 +45,18 @@ const calendarSlice = createSlice({
             state.selectedTraining = action.payload
         },
 
+        setCreatedExercisesList: (state, action)=>{
+            state.createdExercisesList = action.payload
+        },
+        setCurrentTraining: (state, action)=>{
+            state.currentTraining = action.payload
+        },
+        setEditTrainingName: (state, action)=>{
+            state.editTrainingName = action.payload
+        }
+
     }
 })
 
-export const {setSelectedTraining, setIsOpenDrawer, setTrainingsList, setExercisesList, setPersonalTrainingsList } = calendarSlice.actions
+export const {setEditTrainingName, setCurrentTraining, setCreatedExercisesList, setSelectedTraining, setIsOpenDrawer, setTrainingsList, setExercisesList, setPersonalTrainingsList } = calendarSlice.actions
 export default calendarSlice.reducer

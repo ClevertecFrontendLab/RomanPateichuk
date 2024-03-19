@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useCallback, useState} from "react";
 import {Badge, Popover} from "antd";
 
 
@@ -10,8 +10,7 @@ import {
 } from "@redux/selectors.ts";
 
 import {PopoverTitle} from "@components/Popover/components/PopoverTitle/PopoverTitle.tsx";
-import {useDispatch} from "react-redux";
-import {setExercisesList, setSelectedTraining} from "@redux/calendarSlice.ts";
+import {setEditTrainingName, setExercisesList, setSelectedTraining} from "@redux/calendarSlice.ts";
 import {PopoverContent} from "@components/Popover/components/PopoverContent/PopoverContent.tsx";
 import {AppDispatch} from "@redux/configure-store.ts";
 
@@ -25,6 +24,7 @@ export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo((
     const trainingPersonalList =useAppSelector(trainingPersonalListSelector)
 
     const formattedDate = moment.utc(date).startOf('day').toISOString();
+
     const dailyTrainingList = trainingPersonalList.filter(training => training.date === formattedDate)
 
     const dispatch: AppDispatch = useAppDispatch()
@@ -36,13 +36,14 @@ export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo((
         }
         dispatch(setExercisesList([]))
         dispatch(setSelectedTraining(''))
+        dispatch(setEditTrainingName(''))
         setCreateTraining(false)
         setOpenPopover(open)
     }
 
-    const createTrainingHandler = ()=>{
-        setCreateTraining(true)
-    }
+    const createTrainingHandler = useCallback((value: boolean)=>{
+        setCreateTraining(value)
+    },[])
 
     const colors: {[key: string]: string } = {
         'Ноги': '#ff4d4f',
@@ -52,16 +53,25 @@ export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo((
         'Грудь': '#52c41a',
     }
 
+    const CommonHandleChangeSelectCallBack = (value: string)=>{
+        alert(value)
+    }
 
     return <Popover
         open={openPopover}
-        title={() => (<PopoverTitle dailyTrainingList={dailyTrainingList} date={date} createTraining={createTraining} setOpenPopoverCallBack={()=>{setOpenPopover(false)}}/> )}
+        title={() => (<PopoverTitle callHandleChangeSelectCallBack={CommonHandleChangeSelectCallBack} dailyTrainingList={dailyTrainingList} date={date} createTraining={createTraining} setOpenPopoverCallBack={()=>{setOpenPopover(false)}}/> )}
         showArrow={false}
         align={{offset: [-7, 172]}}
         trigger='click'
         placement='topLeft'
         onOpenChange={(open: boolean)=> onOpenChangeHandler(open)}
-        content={<PopoverContent createTraining={createTraining} createTrainingHandlerCallBack={createTrainingHandler} dailyTrainingList={dailyTrainingList}/>}
+        content={<PopoverContent createTraining={createTraining}
+                                 createTrainingModeCallBack={createTrainingHandler}
+                                 dailyTrainingList={dailyTrainingList}
+                                 date={formattedDate}
+            />
+
+    }
     >
         <div style={{
             display: 'flex',

@@ -39,6 +39,7 @@ export interface TrainingType {
 
 export const trainingApi = createApi({
     reducerPath: 'trainingApi',
+    tagTypes: ['Trainings'],
     baseQuery: fetchBaseQuery(
         {
             baseUrl: 'https://marathon-api.clevertec.ru/',
@@ -59,9 +60,32 @@ export const trainingApi = createApi({
     endpoints: (build) => ({
         getTraining: build.query<UserTrainingsType, void>({
             query: () => `/training`,
+            providesTags: (result) =>
+                result
+                    ? [
+                        { type: 'Trainings', id: 'LIST' },
+                        ...result.map(({ id }) => ({ type: 'Trainings' as const, id })),
+                    ]
+                    : [{ type: 'Trainings', id: 'LIST' }],
         }),
         getTrainingList: build.query<TrainingsListType, void>({
             query: () => `/catalogs/training-list`,
+        }),
+        sendExercises: build.mutation({
+            query: (body) => ({
+                url: '/training',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: [{ type: 'Trainings', id: 'LIST' }]
+        }),
+        changeExercises: build.mutation({
+            query: (trainingId, body) => ({
+                url: `/training/${trainingId}`,
+                method: 'PUT',
+                body,
+            }),
+            invalidatesTags: [{ type: 'Trainings', id: 'LIST' }]
         }),
     }),
 
@@ -69,6 +93,8 @@ export const trainingApi = createApi({
 })
 
 export const {
+    useSendExercisesMutation,
     useGetTrainingQuery,
     useGetTrainingListQuery,
+    useChangeExercisesMutation
 } = trainingApi

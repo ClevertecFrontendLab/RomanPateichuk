@@ -1,15 +1,15 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
 import {Button, Drawer, Form, Input, InputNumber, Space, Typography} from "antd";
 import {isOpenDrawerSelector, selectedTrainingSelector} from "@redux/selectors.ts";
 import {useAppDispatch, useAppSelector} from "@hooks/typed-react-redux-hooks.ts";
 import {AppDispatch} from "@redux/configure-store.ts";
-import {setIsOpenDrawer} from "@redux/calendarSlice.ts";
+import {setCreatedExercisesList, setIsOpenDrawer} from "@redux/calendarSlice.ts";
 import {CloseOutlined, PlusOutlined} from "@ant-design/icons";
 import {v1} from "uuid";
 
 const {Title, Text} = Typography;
 
-export const DrawerComponent: React.FC = () => {
+export const DrawerComponent: React.FC = React.memo(() => {
     const dispatch: AppDispatch = useAppDispatch()
     const selectedTraining = useAppSelector(selectedTrainingSelector)
     const isOpenDrawer = useAppSelector(isOpenDrawerSelector)
@@ -18,24 +18,25 @@ export const DrawerComponent: React.FC = () => {
 
     const [forms, setForms] = useState([
         {
-            id: v1(),
-            exercise: '',
-            approaches: '',
-            weight: '',
-            count: '',
+            _id: v1(),
+            name: '',
+            replays: null,
+            weight: null,
+            approaches: null,
+            isImplementation: false
         }
 
     ])
 
-    console.log(forms)
 
     const handleAddForm = () => {
         const newForm = {
-            id: v1(),
-            exercise: '',
-            approaches: '',
-            weight: '',
-            count: '',
+            _id: v1(),
+            name: '',
+            replays: null,
+            weight: null,
+            approaches: null,
+            isImplementation: false
         }
         setForms([...forms, newForm])
     };
@@ -43,41 +44,40 @@ export const DrawerComponent: React.FC = () => {
     const onClose = () => {
         dispatch(setIsOpenDrawer(false))
 
-        const sliceArray = forms.slice(1)
+        const filterList = forms.filter(obj => obj.name.trim() !== '')
 
-        const filterList = sliceArray.filter(obj=> {
-            for (const key in obj) {
-                if (obj[key] === "") {
-                    return false;
-                }
-            }
-            return true;
-        })
-        setForms([forms[0], ...filterList])
+        filterList.length === 0 ? setForms([{
+            _id: v1(),
+            name: '',
+            replays: null,
+            weight: null,
+            approaches: null,
+            isImplementation: false
+        }]) : setForms(filterList)
+
+        dispatch(setCreatedExercisesList(filterList.map(({ _id, ...rest }) => rest)))
+
     }
 
-    const onchangeExerciseHandler = (e: ChangeEvent<HTMLInputElement>, id: sting)=>{
+    const onchangeExerciseHandler = (e: ChangeEvent<HTMLInputElement>, _id: sting)=>{
         const value = e.currentTarget.value
-        const data = forms.map(item => item.id === id ? {...item, exercise: value} : item)
+        const data = forms.map(item => item._id === _id ? {...item, name: value} : item)
         setForms(data)
     }
 
 
-    const onchangeApproachesHandler = (e)=>{
-        const value = e.currentTarget.value
-        const data = forms.map(item => item.id === id ? {...item, approaches: value} : item)
+    const onchangeApproachesHandler = (value: number, _id: sting)=>{
+        const data = forms.map(item => item._id === _id ? {...item, approaches: value} : item)
         setForms(data)
     }
 
-    const onchangeWeightHandler = ()=>{
-        const value = e.currentTarget.value
-        const data = forms.map(item => item.id === id ? {...item, weight: value} : item)
+    const onchangeWeightHandler = (value: number, _id: sting)=>{
+        const data = forms.map(item => item._id === _id ? {...item, weight: value} : item)
         setForms(data)
     }
 
-    const onchangeCountHandler = ()=>{
-        const value = e.currentTarget.value
-        const data = forms.map(item => item.id === id ? {...item, count: value} : item)
+    const onchangeReplaysHandler = (value: number, _id: sting)=>{
+        const data = forms.map(item => item._id === _id ? {...item, replays: value} : item)
         setForms(data)
     }
 
@@ -97,23 +97,25 @@ export const DrawerComponent: React.FC = () => {
         </Space>
 
         <Form>
-            {forms.map(item => <>
+            {forms.map(item => <div key={v1()}>
                 <Form.Item>
-                    <Input onChange={(e: number)=>onchangeExerciseHandler(e,item.id)} value={item.exercise} placeholder="Упражнение"/>
+                    <Input autoFocus onChange={(e: ChangeEvent<HTMLInputElement>)=>onchangeExerciseHandler(e, item._id)} value={item.name} placeholder="Упражнение"/>
                 </Form.Item>
 
                 <Form.Item label="Подходы">
-                    <InputNumber onChange={(e)=>onchangeApproachesHandler(e,item.id)} value={item.approaches} addonBefore="+" placeholder={'1'} />
+                    <InputNumber
+                        min={1}
+                        onChange={(value: number)=>onchangeApproachesHandler(value,item._id)} defaultValue={item.approaches} addonBefore="+" placeholder={'1'} />
                 </Form.Item>
 
                 <Form.Item label="Вес, кг">
-                    <InputNumber onChange={(e)=>onchangeWeightHandler(e,item.id)} value={item.weight} placeholder={'0'}/>
+                    <InputNumber min={0} onChange={(value: number)=>onchangeWeightHandler(value,item._id)} defaultValue={item.weight} placeholder={'0'}/>
                 </Form.Item>
                 <span>x</span>
                 <Form.Item label="Количество">
-                    <InputNumber onChange={(e)=>onchangeCountHandler(e,item.id)} value={item.count} placeholder={'3'}/>
+                    <InputNumber  min={1} onChange={(value: number)=>onchangeReplaysHandler(value,item._id)} defaultValue={item.replays} placeholder={'3'}/>
                 </Form.Item>
-            </>)
+            </div>)
             }
 
             <Form.Item>
@@ -124,4 +126,4 @@ export const DrawerComponent: React.FC = () => {
 
 
     </Drawer>
-}
+})

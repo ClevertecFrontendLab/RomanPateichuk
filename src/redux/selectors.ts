@@ -15,3 +15,9 @@ export const exercisesListSelector = (state: RootState)=> state.calendar.exercis
 export const isOpenDrawerSelector = (state: RootState)=> state.calendar.isOpenDrawer
 
 export const selectedTrainingSelector = (state: RootState)=>state.calendar.selectedTraining
+
+export const createdExercisesListSelector = (state: RootState)=>state.calendar.createdExercisesList
+
+export const currentTrainingSelector = (state: RootState)=>state.calendar.currentTraining
+
+export const editTrainingNameSelector = (state: RootState)=>state.calendar.editTrainingName
