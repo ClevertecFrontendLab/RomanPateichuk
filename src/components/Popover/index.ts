@@ -1,1 +1,1 @@
-export {PopoverComponent as Popover} from './Popover.tsx'
+export {PopoverComponent} from './Popover.tsx'

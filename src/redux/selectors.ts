@@ -21,3 +21,5 @@ export const createdExercisesListSelector = (state: RootState)=>state.calendar.c
 export const currentTrainingSelector = (state: RootState)=>state.calendar.currentTraining
 
 export const editTrainingNameSelector = (state: RootState)=>state.calendar.editTrainingName
+
+

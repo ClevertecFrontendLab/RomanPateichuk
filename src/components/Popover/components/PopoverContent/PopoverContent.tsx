@@ -22,7 +22,7 @@ interface PopoverContentPropsType {
     date: string
 }
 
-export const PopoverContent: React.FC<PopoverContentPropsType> = ({
+export const PopoverContent: React.FC<PopoverContentPropsType> = React.memo(({
                                                                       createTraining,
                                                                       date,
                                                                       createTrainingModeCallBack,
@@ -55,9 +55,6 @@ export const PopoverContent: React.FC<PopoverContentPropsType> = ({
     const sendExercisesHandler = async () => {
 
         if (editTrainingName) {
-            console.log(date)
-            console.log(selectedTraining)
-            console.log(createdExercisesList)
             const trainingId = currentTraining._id
             const data = {
                 name: selectedTraining,
@@ -65,11 +62,11 @@ export const PopoverContent: React.FC<PopoverContentPropsType> = ({
                 exercises: createdExercisesList
             }
 
-            await changeExercises(trainingId, data)
+            await changeExercises({...data, _id: trainingId})
                 .unwrap()
                 .then((res) => {
-                    //console.log(res)
                     createTrainingModeCallBack(false)
+                    //createTrainingModeCallBack(false)
 
                 }).catch((err) => {
                     //console.log(err)
@@ -160,4 +157,4 @@ export const PopoverContent: React.FC<PopoverContentPropsType> = ({
         }
 
     </div>
-}
+})

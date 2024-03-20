@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {Button, Select, Space, Typography} from "antd";
 import {ArrowLeftOutlined, CloseOutlined} from "@ant-design/icons";
 import {Moment} from "moment";
 import {UserTrainingsType} from "@redux/api/trainingApi.ts";
 import {
     setCreatedExercisesList, setCurrentTraining,
-    setExercisesList,
+    setExercisesList, setIsOpenPopover,
     setSelectedTraining
 } from "@redux/calendarSlice.ts";
 import {
@@ -25,7 +25,8 @@ interface PopoverTitlePropsType {
     setOpenPopoverCallBack: ()=>void
 }
 
-export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, date, dailyTrainingList, setOpenPopoverCallBack })=> {
+export const PopoverTitle: React.FC<PopoverTitlePropsType> =React.memo(({createTraining, date, dailyTrainingList, setOpenPopoverCallBack })=> {
+
     const dispatch: AppDispatch = useAppDispatch()
 
     const trainingList = useAppSelector(trainingListSelector)
@@ -35,17 +36,21 @@ export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, da
     const availableTrainingsFiltered = trainingList.filter(training => !plannedTrainingNames.includes(training.name));
     const options = availableTrainingsFiltered.map(item => ({value: item.name, label: item.name}))
 
-    const handleChangeSelect = (value: string) => {
-        dispatch(setSelectedTraining(value))
-        const currentTraining = dailyTrainingList.find(el => el.name === value)
 
+    const handleChangeSelect = useCallback((value: string) => {
+        dispatch(setSelectedTraining(value))
+        //console.log(date)
+        //console.log(options)
+        const currentTraining = dailyTrainingList.find(el => el.name === value)
+        //console.log(currentTraining)
         if(typeof currentTraining === 'undefined'){
             dispatch(setExercisesList([]))
         }
 
+
         currentTraining && dispatch(setExercisesList(currentTraining.exercises))
         currentTraining && dispatch(setCurrentTraining(currentTraining))
-    }
+    }, [])
 
     useEffect(() => {
         handleChangeSelect(editTrainingName)
@@ -89,4 +94,4 @@ export const PopoverTitle: React.FC<PopoverTitlePropsType> =({createTraining, da
         />
 
     </Space>
-}
+})

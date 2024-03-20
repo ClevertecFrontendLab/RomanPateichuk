@@ -53,7 +53,7 @@ const calendarSlice = createSlice({
         },
         setEditTrainingName: (state, action)=>{
             state.editTrainingName = action.payload
-        }
+        },
 
     }
 })

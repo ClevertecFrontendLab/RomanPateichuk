@@ -10,7 +10,13 @@ import {
 } from "@redux/selectors.ts";
 
 import {PopoverTitle} from "@components/Popover/components/PopoverTitle/PopoverTitle.tsx";
-import {setEditTrainingName, setExercisesList, setSelectedTraining} from "@redux/calendarSlice.ts";
+import {
+    setCurrentTraining,
+    setEditTrainingName,
+    setExercisesList,
+    setIsOpenPopover,
+    setSelectedTraining
+} from "@redux/calendarSlice.ts";
 import {PopoverContent} from "@components/Popover/components/PopoverContent/PopoverContent.tsx";
 import {AppDispatch} from "@redux/configure-store.ts";
 
@@ -18,22 +24,29 @@ interface PopoverComponentPropType {
     date: Moment
 }
 
-export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo(({date})=> {
+export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo(({date, data})=> {
     const [openPopover, setOpenPopover] = useState(false)
     const [createTraining, setCreateTraining] = useState(false)
     const trainingPersonalList =useAppSelector(trainingPersonalListSelector)
 
     const formattedDate = moment.utc(date).startOf('day').toISOString();
+    //const dailyTrainingList = trainingPersonalList.filter(training => training.date === formattedDate)
+   //const dailyTrainingList = trainingPersonalList.filter(training => moment(training.date).format('DD.MM.YYYY') === moment(date).format('DD.MM.YYYY'))
 
-    const dailyTrainingList = trainingPersonalList.filter(training => training.date === formattedDate)
+
+    //console.log('trainingPersonalList ', dailyTrainingList)
 
     const dispatch: AppDispatch = useAppDispatch()
     const isOpenDrawer = useAppSelector(isOpenDrawerSelector)
 
     const onOpenChangeHandler = (open: boolean)=>{
+        console.log(isOpenDrawer)
+
         if(isOpenDrawer){
             return;
         }
+
+
         dispatch(setExercisesList([]))
         dispatch(setSelectedTraining(''))
         dispatch(setEditTrainingName(''))
@@ -53,21 +66,18 @@ export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo((
         'Грудь': '#52c41a',
     }
 
-    const CommonHandleChangeSelectCallBack = (value: string)=>{
-        alert(value)
-    }
 
     return <Popover
         open={openPopover}
-        title={() => (<PopoverTitle callHandleChangeSelectCallBack={CommonHandleChangeSelectCallBack} dailyTrainingList={dailyTrainingList} date={date} createTraining={createTraining} setOpenPopoverCallBack={()=>{setOpenPopover(false)}}/> )}
+        title={() => (<PopoverTitle dailyTrainingList={data} date={date} createTraining={createTraining} setOpenPopoverCallBack={()=>{setOpenPopover(false)}}/> )}
         showArrow={false}
         align={{offset: [-7, 172]}}
         trigger='click'
         placement='topLeft'
-        onOpenChange={(open: boolean)=> onOpenChangeHandler(open)}
+        onOpenChange={onOpenChangeHandler}
         content={<PopoverContent createTraining={createTraining}
                                  createTrainingModeCallBack={createTrainingHandler}
-                                 dailyTrainingList={dailyTrainingList}
+                                 dailyTrainingList={data}
                                  date={formattedDate}
             />
 
@@ -80,7 +90,7 @@ export const PopoverComponent: React.FC<PopoverComponentPropType> = React.memo((
             height: '100%'
         }}>
             {
-                dailyTrainingList && dailyTrainingList.map((training) => (
+                data && data.map((training) => (
                     <Badge key={training._id} color={training.name in colors ? colors[training.name] : '\'green\''}
                            text={training.name}/>
                 ))

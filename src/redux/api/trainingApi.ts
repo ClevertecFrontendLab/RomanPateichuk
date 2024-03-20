@@ -4,7 +4,7 @@ import {getStorageItem} from "@utils/index.ts";
 export type UserTrainingsType = Array<Training> | []
 
 export interface Training {
-    _id: string
+    _id?: string
     name: string
     date: string
     isImplementation: boolean
@@ -29,6 +29,9 @@ export interface Exercise {
     isImplementation: boolean
 }
 
+export type ModifiedExercises = Training & {
+    exercises: Exercise[];
+}
 export type TrainingsListType = TrainingType[] | []
 
 export interface TrainingType {
@@ -79,9 +82,9 @@ export const trainingApi = createApi({
             }),
             invalidatesTags: [{ type: 'Trainings', id: 'LIST' }]
         }),
-        changeExercises: build.mutation({
-            query: (trainingId, body) => ({
-                url: `/training/${trainingId}`,
+        changeExercises: build.mutation<void, ModifiedExercises>({
+            query: (body ) => ({
+                url: `/training/${body._id}`,
                 method: 'PUT',
                 body,
             }),

@@ -9,7 +9,7 @@ import {
     useGetTrainingQuery, UserTrainingsType
 } from "@redux/api/trainingApi.ts"
 
-import {Popover} from "@components/Popover";
+import {PopoverComponent} from "@components/Popover";
 import {useDispatch} from "react-redux";
 import {setPersonalTrainingsList, setTrainingsList} from "@redux/calendarSlice.ts";
 import {DrawerComponent} from "@components/Popover/components/DrawerComponent/DrawerComponent.tsx";
@@ -30,12 +30,21 @@ moment.updateLocale('ru', {
 })
 
 
-export const CalendarPage: React.FC = () => {
+export const CalendarPage: React.FC = React.memo(() => {
 
     const {data: personaTrainingList = []} = useGetTrainingQuery()
     const {data: trainingList = []} = useGetTrainingListQuery()
 
     const dispatch = useDispatch()
+
+    const dateCellRender = (value: Moment) => {
+        const listData = personaTrainingList?.filter(
+            (el) => el.date === moment.utc(value).startOf('day').toISOString()
+        )
+        return (
+            <PopoverComponent date={value} data={listData}/>
+        );
+    };
 
     useEffect(() => {
         dispatch(setTrainingsList(trainingList))
@@ -53,12 +62,6 @@ export const CalendarPage: React.FC = () => {
                 <span>Backlog number</span>
             </div>
         ) : null;
-    }
-
-    const dateCellRender = (date: Moment) => {
-        return (
-           <Popover date={date}/>
-        )
     }
 
     const calendarLocale = {
@@ -84,17 +87,18 @@ export const CalendarPage: React.FC = () => {
 
 
     }
-
-
-    const onSelectHandler = (date: Moment) => {
-        //console.log(date)
-        // const isPastDate = date ? moment(date).isBefore(moment(), 'day') : false
-
-    }
+    //
+    // const [date, setDate] = useState<Moment>()
+    //
+    // const onSelectHandler = (date: Moment) => {
+    //     setDate(date)
+    // }
 
     return <>
         <DrawerComponent/>
-        <Calendar onSelect={onSelectHandler} locale={calendarLocale} dateCellRender={dateCellRender}
-                  monthCellRender={monthCellRender}/>
+        <Calendar locale={calendarLocale}
+                  dateCellRender={dateCellRender}
+                  monthCellRender={monthCellRender}
+        />
     </>
-}
+})
